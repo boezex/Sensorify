@@ -18,17 +18,17 @@ class PressureSensor:
         self.i2cbus.write_byte_data (self.i2c_address, self.CTRL_REG, 0x00)
 
     def enterMCUMode (self):
-        data = [0x00, 0xD0, 0x40, 0x18, 0x06]
-        self.i2cbus.write_block_data (self.i2c_address, data)
+        data = [0xD0, 0x40, 0x18, 0x06]
+        self.i2cbus.write_block_data (self.i2c_address, self.START_ADDRESS, data)
 
     def readPressure (self):
         self.enterMCUMode()
 
-        tmpData = [0x00, 0xD0, 0x51, 0x2C, 0x07]
-        RD_Pressure = self.i2cbus.block_process_call (self.i2c_address, tmpData)
+        tmpData = [ 0xD0, 0x51, 0x2C, 0x07]
+        RD_Pressure = self.i2cbus.block_process_call (self.i2c_address, self.START_ADDRESS, tmpData)
         print (RD_Pressure)
 
 
 sens = PressureSensor
 
-PressureSensor.readPressure()
+sens.readPressure()
