@@ -1,3 +1,4 @@
+from threading import activeCount
 from smbus import SMBus
 import time
 
@@ -25,13 +26,14 @@ class PressureSensor:
     def readPressure (self):
         self.enterMCUMode()
 
-        tmpData = [ 0xD0, 0x51, 0x2C]
+        tmpData = [0xD0, 0x51, 0x2C]
         self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, tmpData)
 
-        RD_Pressure = self.i2cbus.read_i2c_word_data (self.i2c_address, self.BUFFER_0)
-        print (RD_Pressure)
+        RD_Pressure = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
+        actualPressure = (RD_Pressure - 1024) / 60000 * 150 - 150 / 2
+        return actualPressure
 
 
 sens = PressureSensor()
 
-sens.readPressure()
+print(sens.readPressure())
