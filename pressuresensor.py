@@ -33,9 +33,23 @@ class PressureSensor:
             data = [0xD0, 0x51, 0x2C]
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
-            RD_Pressure = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            actualPressure = (RD_Pressure - 1024) / 60000 * 150 - 150 / 2
+            Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
+            actualPressure = (Rv - 1024) / 60000 * 250
         finally:
             self.mutex.release()
             return actualPressure
+
+    def readTemperature (self):
+        self.mutex.acquire()
+        try:
+            self.enterMCUMode()
+
+            data = [0xD0, 0x61, 0x2C]
+            self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
+
+            Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
+            actualTemperature = (Rv - 10214) / 37.39
+        finally:
+            self.mutex.release()
+            return actualTemperature
 

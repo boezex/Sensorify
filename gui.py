@@ -25,9 +25,9 @@ class GUI:
         self.updateThread = Thread (target=self.updateGui, daemon=True)
         self.updateThread.start ()
 
-        self.window.mainloop ()
-
     def updateGui (self):
+        self.window.mainloop ()
         while True:
             self.diffPressActualLabel["text"] = str(self.pressureSensor.readPressure())
+            self.tempActualLabel["text"] = str(self.pressureSensor.readTemperature())
             sleep(1)
