@@ -1,9 +1,16 @@
-#include <fan.hpp>
+#include "fan.hpp"
 #include <iostream>
 
-Fan fan ();
+int main (void)
+{
 
-short pct = 30;
-fan.setSpeed(pct);
+    Fan fan ();
 
-std::cout << "fan speed current: " << fan.readRegister (53264) << std::endl;
+    short pct = 30;
+    fan.setSpeed(pct);
+
+    std::cout << "fan speed current: " << fan.readRegister (53264) << std::endl;
+
+    return 0;
+
+}

@@ -1,6 +1,6 @@
-#include <fan.hpp>
+#include "fan.hpp"
 
-void Fan::Fan ()
+Fan::Fan ()
 {
     connection = modbus_new_rtu("/dev/ttyAMA0", 19200, 'E', 8, 1);
     modbus_set_slave(connection, 1);
@@ -16,7 +16,7 @@ void Fan::Fan ()
 
 }
 
-void Fan::~Fan ()
+Fan::~Fan ()
 {
     modbus_close(connection);
     modbus_free(connection);
