@@ -1,14 +1,14 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -I /usr/include/modbus -lmodbus -lpthread
 
-DEPS = fan.hpp
-OBJ = fan.o main.o 
+main: main.o fan.o
+	$(CXX) $(CXXFLAGS) -o main main.o fan.o
 
-%.o: %.c $(DEPS)
-	$(CXX) -c -o $@ $< $(CXXFLAGS)
+main.o: main.cpp fan.hpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
 
-main: $(OBJ)
-	$(CXX) -o $@ $^ $(CXXFLAGS)
+fan.o: fan.hpp
+	$(CXX) $(CXXFLAGS) -c fan.cpp
 
 
 .PHONY: clean
