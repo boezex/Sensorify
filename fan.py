@@ -16,9 +16,7 @@ def main():
         #Connect to the slave
         ser = serial.rs485.RS485('/dev/ttyAMA0', 19200, bytesize=serial.EIGHTBITS, parity=serial.PARITY_EVEN, stopbits=serial.STOPBITS_ONE, timeout=3, rtscts = True)
         ser.rs485_mode = serial.rs485.RS485Settings(rts_level_for_tx=False,
-                                            rts_level_for_rx=True,
-                                            delay_before_tx=0.0,
-                                            delay_before_rx=-0.0)
+                                            rts_level_for_rx=True)
         master = modbus_rtu.RtuMaster(ser)
         master.set_timeout(5.0)
         master.set_verbose(True)
