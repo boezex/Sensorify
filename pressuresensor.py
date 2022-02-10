@@ -1,4 +1,5 @@
 from threading import Thread, Lock
+from typing import final
 from smbus import SMBus
 import time
 
@@ -19,6 +20,10 @@ class PressureSensor:
         self.i2cbus.write_byte_data (self.i2c_address, self.CTRL_REG, 0x00)
         time.sleep(0.1)
         self.mutex = Lock()
+        
+    def toBigEndian(self, data):
+        tmpData = data.to_bytes (2, 'big')
+        return int.from_bytes(tmpData, 'little')
 
     def enterMCUMode (self):
         data = [0xD0, 0x40, 0x18, 0x06]
@@ -34,7 +39,9 @@ class PressureSensor:
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
             Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            actualPressure = (Rv - 1024) / 60000 * 250
+            RvBigEndian = self.toBigEndian (Rv)
+
+            actualPressure = (RvBigEndian - 1024) / 60000 * 250
         finally:
             self.mutex.release()
             return actualPressure
@@ -48,8 +55,11 @@ class PressureSensor:
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
             Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            actualTemperature = (Rv - 10214) / 37.39
+            RvBigEndian = self.toBigEndian (Rv)
+            
+            actualTemperature = (RvBigEndian - 10214) / 37.39
         finally:
             self.mutex.release()
             return actualTemperature
+
 
