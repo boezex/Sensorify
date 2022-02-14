@@ -15,7 +15,7 @@ class GUI:
 
         self.window = Tk ()
         self.window.title ("Sensorify (+config version)")
-        self.window.geometry ("800x300")
+        self.window.geometry ("900x400")
         self.window.resizable (False,False)
         self.mode = 1
 
@@ -30,7 +30,7 @@ class GUI:
         self.tempActualLabel.grid (row=1, column=1, padx=6, pady=6)
 
         self.separator = Separator (self.window, orient='vertical')
-        self.separator.grid (row=0, column=2, rowspan=3, sticky="ns", padx=6, pady=6)
+        self.separator.grid (row=0, column=2, rowspan=6, sticky="ns")
 
         Label (self.window, text= "Time to calculate average pressure diff(s):").grid (row=0, column=3, padx=6, pady=6)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal')
@@ -40,7 +40,7 @@ class GUI:
         self.nenRadioButton = Radiobutton (self.window, text="NEN-EN 13141-1 compliant", value=1, variable=self.mode)
         self.customRadioButton = Radiobutton (self.window, text="Custom Pressure interval:", value=2, variable=self.mode)
         self.nenRadioButton.grid (row=1, column=4, padx=6, pady=6)
-        self.customRadioButton.grid (row=2, column=3, padx=6, pady=6)
+        self.customRadioButton.grid (row=2, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Max Pressure to test (Pa)").grid (row=4, column=3, padx=6, pady=6)
         Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=5, column=3, padx=6, pady=6)
