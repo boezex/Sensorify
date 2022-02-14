@@ -7,6 +7,9 @@ class Config:
         self.config = configparser.ConfigParser()
         self.mutex = Lock()
         self.config.read ("sensorify.config")
+        if "measurement" not in self.config.sections():
+            print("setting defaults!")
+            self.setDefaults ()
 
     def writeConfig (self):
         self.mutex.acquire ()
@@ -14,7 +17,6 @@ class Config:
             with open('sensorify.config', 'w') as configfile:
                 self.config.write(configfile)
         finally:
-            print("hier 2")
             self.mutex.release ()
 
     def setDefaults (self):
@@ -25,13 +27,13 @@ class Config:
             self.config['measurement']['maxPressure'] = '150'
             self.config['measurement']['pressureInterval'] = '10'
         
-            print ("hier 1")
             self.writeConfig ()
 
     def getMeasurementSettings (self):
         return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval'])
 
     def setMeasurementSettings (self, mode, measurementTime, maxPressure, pressureInterval):
+        self.config['measurement'] = {}
         self.config['measurement']['mode'] = str(mode)
         self.config['measurement']['measurementTime'] = str(measurementTime)
         self.config['measurement']['maxPressure'] = str(maxPressure)
