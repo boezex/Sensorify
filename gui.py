@@ -39,8 +39,8 @@ class GUI:
         Label (self.window, text= "Measurement mode:").grid (row=1, column=3, padx=6, pady=6)
         self.nenRadioButton = Radiobutton (self.window, text="NEN-EN 13141-1 compliant", value=1, variable=self.mode)
         self.customRadioButton = Radiobutton (self.window, text="Custom Pressure interval:", value=2, variable=self.mode)
-        self.nenRadioButton.grid (row=1, column=3, padx=6, pady=6)
-        self.customRadioButton.grid (row=3, column=3, padx=6, pady=6)
+        self.nenRadioButton.grid (row=1, column=4, padx=6, pady=6)
+        self.customRadioButton.grid (row=2, column=3, padx=6, pady=6)
 
         Label (self.window, text= "Max Pressure to test (Pa)").grid (row=4, column=3, padx=6, pady=6)
         Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=5, column=3, padx=6, pady=6)
