@@ -24,15 +24,10 @@ class GUI:
         self.tempActualLabel = Label (self.window, text="0")
         self.tempActualLabel.grid (row=1, column=1)
 
-        self.updateTk = Thread (target=self.updatetk, daemon=True)
-        self.updateTk.start ()
-
         self.updateThread = Thread (target=self.updateGui, daemon=True)
         self.updateThread.start ()
-    
-    def updatetk (self):
-        while True:
-            self.window.update()
+
+        self.window.mainloop ()
 
     def updateGui (self):
         while True:
