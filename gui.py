@@ -3,6 +3,7 @@ from tkinter.ttk import Separator
 from turtle import update
 
 from pressuresensor import *
+from config import *
 from time import *
 import threading
 
@@ -10,14 +11,15 @@ class GUI:
 
     CONSTANTS = 0
 
-    def __init__ (self, pressureSensor):
+    def __init__ (self, pressureSensor, config):
         self.pressureSensor = pressureSensor
+        self.config = config
 
         self.window = Tk ()
         self.window.title ("Sensorify (+config version)")
         self.window.geometry ("900x400")
         self.window.resizable (False,False)
-        self.mode = 1
+        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval = config.getMeasurementSettings
 
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0, padx=6, pady=6)
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
@@ -32,8 +34,10 @@ class GUI:
         self.separator = Separator (self.window, orient='vertical')
         self.separator.grid (row=0, column=2, rowspan=6, sticky="ns")
 
+
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal')
+        self.measurementTimeSlider.set (self.measurementTime)
         self.measurementTimeSlider.grid (row=0, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Measurement mode:").grid (row=1, column=3, padx=6, pady=6)
@@ -45,9 +49,11 @@ class GUI:
         Label (self.window, text= "Max Pressure to test (Pa)").grid (row=3, column=3, padx=6, pady=6)
         Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=4, column=3, padx=6, pady=6)
         self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal')
+        self.maxPressureSlider.set (self.maxPressure)
         self.maxPressureSlider.grid (row=3, column=4, padx=6, pady=6)
 
         self.PressureDiffSlider = Scale (self.window, from_=2, to=15, orient='horizontal')
+        self.PressureDiffSlider.set (self.pressureInterval)
         self.PressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
 
 
