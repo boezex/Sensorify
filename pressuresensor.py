@@ -19,11 +19,16 @@ class PressureSensor:
         # misschien nog resetten?
         self.i2cbus.write_byte_data (self.i2c_address, self.CTRL_REG, 0x00)
         time.sleep(0.1)
+        self.zeroIsSet = False
         self.compensation = 0.0
         self.mutex = Lock()
 
     def setZero (self):
         self.compensation = self.readPressureRaw ()
+        self.zeroIsSet = True
+    
+    def isSetZero (self):
+        return self.zeroIsSet
         
     def toBigEndian(self, data):
         tmpData = data.to_bytes (2, 'big')
