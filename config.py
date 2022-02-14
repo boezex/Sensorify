@@ -18,20 +18,20 @@ class Config:
 
     def setDefaults (self):
         
-            self.config['measurement']['mode'] = 1
-            self.config['measurement']['measurementTime'] = 60
-            self.config['measurement']['maxPressure'] = 150
-            self.config['measurement']['pressureInterval'] = 10
+            self.config['measurement']['mode'] = '1'
+            self.config['measurement']['measurementTime'] = '60'
+            self.config['measurement']['maxPressure'] = '150'
+            self.config['measurement']['pressureInterval'] = '10'
         
             self.writeConfig ()
 
     def getMeasurementSettings (self):
-        return self.config['measurement']['mode'], self.config['measurement']['measurementTime'], self.config['measurement']['maxPressure'], self.config['measurement']['pressureInterval']
+        return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval'])
 
     def setMeasurementSettings (self, mode, measurementTime, maxPressure, pressureInterval):
-        self.config['measurement']['mode'] = mode
-        self.config['measurement']['measurementTime'] = measurementTime
-        self.config['measurement']['maxPressure'] = maxPressure
-        self.config['measurement']['pressureInterval'] = pressureInterval
+        self.config['measurement']['mode'] = str(mode)
+        self.config['measurement']['measurementTime'] = str(measurementTime)
+        self.config['measurement']['maxPressure'] = str(maxPressure)
+        self.config['measurement']['pressureInterval'] = str(pressureInterval)
     
         self.writeConfig ()
