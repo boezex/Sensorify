@@ -32,7 +32,7 @@ class GUI:
         self.separator = Separator (self.window, orient='vertical')
         self.separator.grid (row=0, column=2, rowspan=6, sticky="ns")
 
-        Label (self.window, text= "Time to calculate average pressure diff(s):").grid (row=0, column=3, padx=6, pady=6)
+        Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal')
         self.measurementTimeSlider.grid (row=0, column=4, padx=6, pady=6)
 
@@ -42,8 +42,8 @@ class GUI:
         self.nenRadioButton.grid (row=1, column=4, padx=6, pady=6)
         self.customRadioButton.grid (row=2, column=4, padx=6, pady=6)
 
-        Label (self.window, text= "Max Pressure to test (Pa)").grid (row=4, column=3, padx=6, pady=6)
-        Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=5, column=3, padx=6, pady=6)
+        Label (self.window, text= "Max Pressure to test (Pa)").grid (row=3, column=3, padx=6, pady=6)
+        Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=4, column=3, padx=6, pady=6)
         self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal')
         self.maxPressureSlider.grid (row=4, column=4, padx=6, pady=6)
 
