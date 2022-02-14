@@ -14,6 +14,7 @@ class Config:
             with open('sensorify.config', 'w') as configfile:
                 self.config.write(configfile)
         finally:
+            print("hier 2")
             self.mutex.release ()
 
     def setDefaults (self):
@@ -24,6 +25,7 @@ class Config:
             self.config['measurement']['maxPressure'] = '150'
             self.config['measurement']['pressureInterval'] = '10'
         
+            print ("hier 1")
             self.writeConfig ()
 
     def getMeasurementSettings (self):
