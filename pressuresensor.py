@@ -19,7 +19,11 @@ class PressureSensor:
         # misschien nog resetten?
         self.i2cbus.write_byte_data (self.i2c_address, self.CTRL_REG, 0x00)
         time.sleep(0.1)
+        self.compensation = 0.0
         self.mutex = Lock()
+
+    def setZero (self):
+        self.compensation = self.readPressureRaw ()
         
     def toBigEndian(self, data):
         tmpData = data.to_bytes (2, 'big')
@@ -31,6 +35,23 @@ class PressureSensor:
         time.sleep(0.033)
 
     def readPressure (self):
+        self.mutex.acquire()
+        try:
+            self.enterMCUMode()
+
+            data = [0xD0, 0x51, 0x2C]
+            self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
+
+            Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
+            RvBigEndian = self.toBigEndian (Rv)
+
+            actualPressure = (RvBigEndian - 1024) / 60000 * 250
+            actualPressure -= self.compensation
+        finally:
+            self.mutex.release()
+            return round (actualPressure, 2)
+
+    def readPressureRaw (self):
         self.mutex.acquire()
         try:
             self.enterMCUMode()
@@ -60,6 +81,6 @@ class PressureSensor:
             actualTemperature = (RvBigEndian - 10214) / 37.39
         finally:
             self.mutex.release()
-            return actualTemperature
+            return round (actualTemperature, 2)
 
 
