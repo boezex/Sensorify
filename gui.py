@@ -42,11 +42,13 @@ class GUI:
         self.nenRadioButton.grid (row=2, column=3, padx=10, pady=10)
         self.customRadioButton.grid (row=3, column=3, padx=10, pady=10)
 
-        self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal', text="Max Pressure to test (Pa)")
-        self.maxPressureSlider.grid (row=0, column=4, padx=10, pady=10)
+        Label (self.window, text= "Max Pressure to test (Pa)").grid (row=4, column=3, padx=10, pady=10)
+        Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=5, column=3, padx=10, pady=10)
+        self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal')
+        self.maxPressureSlider.grid (row=4, column=4, padx=10, pady=10)
 
-        self.PressureDiffSlider = Scale (self.window, from_=2, to=15, orient='horizontal', text="Difference in pressure between measurements (Pa)")
-        self.PressureDiffSlider.grid (row=0, column=5, padx=10, pady=10)
+        self.PressureDiffSlider = Scale (self.window, from_=2, to=15, orient='horizontal')
+        self.PressureDiffSlider.grid (row=5, column=4, padx=10, pady=10)
 
 
 
