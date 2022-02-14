@@ -17,7 +17,8 @@ class Config:
             self.mutex.release ()
 
     def setDefaults (self):
-        
+
+            self.config['measurement'] = {}
             self.config['measurement']['mode'] = '1'
             self.config['measurement']['measurementTime'] = '60'
             self.config['measurement']['maxPressure'] = '150'
