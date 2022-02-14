@@ -45,14 +45,14 @@ class GUI:
         Label (self.window, text= "Max Pressure to test (Pa)").grid (row=3, column=3, padx=6, pady=6)
         Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=4, column=3, padx=6, pady=6)
         self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal')
-        self.maxPressureSlider.grid (row=4, column=4, padx=6, pady=6)
+        self.maxPressureSlider.grid (row=3, column=4, padx=6, pady=6)
 
         self.PressureDiffSlider = Scale (self.window, from_=2, to=15, orient='horizontal')
-        self.PressureDiffSlider.grid (row=5, column=4, padx=6, pady=6)
+        self.PressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
 
 
 
-        Button (self.window, text="Start measurement!").grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
+        Button (self.window, text="Start measurement!").grid (row = 5, column=3, columnspan=2, padx=6, pady=6)
 
         self.updateThread = Thread (target=self.updateGui, daemon=True)
         self.updateThread.start ()
