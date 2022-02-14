@@ -27,10 +27,11 @@ class GUI:
         self.tempActualLabel.grid (row=1, column=1, padx=10, pady=10)
 
         self.separator = Separator (self.window, orient='vertical')
-        self.separator.grid (row=0, column=2, sticky="ns", padx=10, pady=10)
+        self.separator.grid (row=0, column=2, rowspan=3, sticky="ns", padx=10, pady=10)
 
+        Label (self.window, text= "Time to calculate average:").grid (row=0, column=3)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal')
-        self.measurementTimeSlider.grid (row=0, column=3, padx=10, pady=10)
+        self.measurementTimeSlider.grid (row=0, column=4, padx=10, pady=10)
         self.updateThread = Thread (target=self.updateGui, daemon=True)
         self.updateThread.start ()
 
