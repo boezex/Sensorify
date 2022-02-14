@@ -17,7 +17,7 @@ class GUI:
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0)
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1)
 
-        Button (self.window, text="Set pressure sensor 0.0", command=self.pressureSensor.setZero()).pack()
+        Button (self.window, text="Set pressure sensor 0.0", command=self.pressureSensor.setZero()).grid (row = 3)
 
         self.diffPressActualLabel = Label (self.window, text="0")
         self.diffPressActualLabel.grid (row=0, column=1)
