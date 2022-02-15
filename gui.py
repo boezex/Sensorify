@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter.messagebox import showerror
 from tkinter.ttk import Separator
 from turtle import update
 
@@ -29,7 +30,7 @@ class GUI:
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0, padx=6, pady=6)
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
 
-        Button (self.window, text="Set pressure sensor 0.0", command=lambda: self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
+        Button (self.window, text="Set pressure sensor 0.0", command=lambda self.isBusy: messagebox.showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.busy else self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
 
         self.diffPressActualLabel = Label (self.window, text="0")
         self.diffPressActualLabel.grid (row=0, column=1, padx=6, pady=6)
@@ -82,6 +83,9 @@ class GUI:
         self.updateInstantThread.start ()
 
         self.window.mainloop ()
+
+    def showError (self):
+
 
     def startMeasurement (self):
         self.isBusy = True
