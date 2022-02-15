@@ -29,14 +29,21 @@ class GUI:
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0, padx=6, pady=6)
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
 
-        Button (self.window, text="Set pressure sensor 0.0", command=lambda: self.pressureSensor.setZero()).grid (row = 3, columnspan=2, padx=6, pady=6)
+        Button (self.window, text="Set pressure sensor 0.0", command=lambda: self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
 
         self.diffPressActualLabel = Label (self.window, text="0")
         self.diffPressActualLabel.grid (row=0, column=1, padx=6, pady=6)
         self.tempActualLabel = Label (self.window, text="0")
         self.tempActualLabel.grid (row=1, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=5, sticky="ns", padx=6, pady=6)
+        self.fanSpeedActualLabel = Label (self.window, text="0")
+        self.fanSpeedActualLabel.grid (row=2, column=1, padx=6, pady=6)
+        self.fanSensorActualLabel = Label (self.window, text="0")
+        self.fanSensorActualLabel.grid (row=3, column=1, padx=6, pady=6)
+        self.airFlowActualLabel = Label (self.window, text="0")
+        self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
+
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=6, sticky="ns", padx=6, pady=6)
         Separator (self.window, orient='horizontal').grid (row=7, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
 
@@ -63,8 +70,9 @@ class GUI:
 
         Label (self.window, text= "Object description:").grid (row=5, column=3, padx=6, pady=6)
         self.descriptionEntry = Entry (self.window)
+        self.descriptionEntry.grid (row=5, column=4, padx=6, pady=6)
 
-        Button (self.window, text="Start measurement!", command=self.startMeasurement()).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
+        Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement()).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
     
     def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
@@ -77,14 +85,17 @@ class GUI:
 
     def startMeasurement (self):
         self.isBusy = True
+        self.measurementTime = self.measurementTimeSlider.get ()
+        self.maxPressure = self.maxPressureSlider.get ()
+        self.pressureInterval = self.pressureDiffSlider.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval)
 
     def updateInstant (self):
         while True:
             self.mode = self.radioButtons.get ()
             if self.mode == 1 or self.isBusy:
-                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey72")
-                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey72")
+                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey")
+                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey")
             else:
                 self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
                 self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
