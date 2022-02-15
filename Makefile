@@ -7,13 +7,13 @@ main: readregister readinputregister writeregister
 
 
 readregister: readRegister.cpp
-	$(CXX) $(CXXFLAGS) -c readRegister.cpp -o readRegister
+	$(CXX) $(CXXFLAGS) -o readRegister readRegister.cpp
 
 readinputregister: readInputRegister.cpp
-	$(CXX) $(CXXFLAGS) -c readInputRegister.cpp -o readInputRegister
+	$(CXX) $(CXXFLAGS) -o readInputRegister readInputRegister.cpp
 
 writeregister: writeRegister.cpp
-	$(CXX) $(CXXFLAGS) -c writeRegister.cpp -o writeRegister
+	$(CXX) $(CXXFLAGS) -o writeRegister writeRegister.cpp
 
 .PHONY: clean
 clean:
