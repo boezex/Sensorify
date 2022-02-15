@@ -2,7 +2,9 @@ CXX = g++
 CXXFLAGS = -std=c++11 -I /usr/include/modbus -lmodbus -lpthread
 
 main: readregister readinputregister writeregister
-	echo appaatjes worden gebouwd
+	appaatjes worden gebouwd
+	chmod +x readRegister readInputRegister writeRegister
+
 
 readregister: readRegister.cpp
 	$(CXX) $(CXXFLAGS) -c readRegister.cpp -o readRegister
