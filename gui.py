@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter.ttk import Separator
 from turtle import update
 
+from numpy import pad
+
 from pressuresensor import *
 from config import *
 from time import *
@@ -20,6 +22,8 @@ class GUI:
         self.window.geometry ("900x400")
         self.window.resizable (False,False)
         self.mode, self.measurementTime, self.maxPressure, self.pressureInterval = config.getMeasurementSettings ()
+        self.radioButtons = IntVar ()
+        self.radioButtons.set (self.mode)
         self.isBusy = False
 
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0, padx=6, pady=6)
@@ -32,8 +36,8 @@ class GUI:
         self.tempActualLabel = Label (self.window, text="0")
         self.tempActualLabel.grid (row=1, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=1, column=2, rowspan=4, sticky="ns")
-        Separator (self.window, orient='horizontal').grid (row=6, column=1, rowspan=4, sticky="ew", padx=6, pady=6)
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=5, sticky="ns", padx=6, pady=6)
+        Separator (self.window, orient='horizontal').grid (row=7, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
 
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
@@ -42,8 +46,8 @@ class GUI:
         self.measurementTimeSlider.grid (row=0, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Measurement mode:").grid (row=1, column=3, padx=6, pady=6)
-        self.nenRadioButton = Radiobutton (self.window, text="NEN-EN 13141-1 compliant", value=1, variable=self.mode)
-        self.customRadioButton = Radiobutton (self.window, text="Custom Pressure interval:", value=2, variable=self.mode)
+        self.nenRadioButton = Radiobutton (self.window, text="NEN-EN 13141-1 compliant", value=1, variable=self.radioButtons)
+        self.customRadioButton = Radiobutton (self.window, text="Custom Pressure interval:", value=2, variable=self.radioButtons)
         self.nenRadioButton.grid (row=1, column=4, padx=6, pady=6)
         self.customRadioButton.grid (row=2, column=4, padx=6, pady=6)
 
@@ -57,10 +61,12 @@ class GUI:
         self.pressureDiffSlider.set (self.pressureInterval)
         self.pressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
 
+        Label (self.window, text= "Object description:").grid (row=5, column=3, padx=6, pady=6)
+        self.descriptionEntry = Entry (self.window)
 
-
-        Button (self.window, text="Start measurement!", command=self.startMeasurement()).grid (row = 5, column=3, columnspan=2, padx=6, pady=6)
-
+        Button (self.window, text="Start measurement!", command=self.startMeasurement()).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
+    
+    def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
         self.updateThread.start ()
 
@@ -71,15 +77,17 @@ class GUI:
 
     def startMeasurement (self):
         self.isBusy = True
+        self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval)
 
     def updateInstant (self):
         while True:
+            self.mode = self.radioButtons.get ()
             if self.mode == 1 or self.isBusy:
-                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey")
-                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey")
+                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey72")
+                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey72")
             else:
-                self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "blue")
-                self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "blue")
+                self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
+                self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
 
     def updateGui (self):
         while True:
