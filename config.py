@@ -4,11 +4,10 @@ from threading import Thread, Lock
 class Config:
 
     def __init__(self):
-        self.config = configparser.ConfigParser()
-        self.mutex = Lock()
+        self.config = configparser.ConfigParser ()
+        self.mutex = Lock ()
         self.config.read ("sensorify.config")
-        if "measurement" not in self.config.sections():
-            print("setting defaults!")
+        if "measurement" not in self.config.sections ():
             self.setDefaults ()
 
     def writeConfig (self):
