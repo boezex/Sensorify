@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++11 -I /usr/include/modbus -lmodbus -lpthread
 
 main: readregister readinputregister writeregister
-	appaatjes worden gebouwd
+	@echo appaatjes worden gebouwd
 	chmod +x readRegister readInputRegister writeRegister
 
 
@@ -17,4 +17,4 @@ writeregister: writeRegister.cpp
 
 .PHONY: clean
 clean:
-	rm -r main.o
+	rm -r readRegister readInputRegister writeRegister
