@@ -1,5 +1,4 @@
 from threading import Thread, Lock
-from typing import final
 from smbus import SMBus
 import time
 
@@ -26,6 +25,9 @@ class PressureSensor:
     def setZero (self):
         self.compensation = self.readPressureRaw ()
         self.zeroIsSet = True
+
+    def resetZero (self):
+        self.zeroIsSet =  False
     
     def isSetZero (self):
         return self.zeroIsSet

@@ -1,15 +1,17 @@
 CXX = g++
 CXXFLAGS = -std=c++11 -I /usr/include/modbus -lmodbus -lpthread
 
-main: main.o fan.o
-	$(CXX) $(CXXFLAGS) -o main main.o fan.o
+main: readregister readinputregsiter writeregister
+	echo appaatjes worden gebouwd
 
-main.o: main.cpp fan.hpp
-	$(CXX) $(CXXFLAGS) -c main.cpp
+readregister: readRegister.cpp
+	$(CXX) $(CXXFLAGS) -c readRegister.cpp -o readRegister
 
-fan.o: fan.hpp
-	$(CXX) $(CXXFLAGS) -c fan.cpp
+readinputregister: readInputRegister.cpp
+	$(CXX) $(CXXFLAGS) -c readInputRegister.cpp -o readInputRegister
 
+writeregister: writeRegister.cpp
+	$(CXX) $(CXXFLAGS) -c writeRegister.cpp -o writeRegister
 
 .PHONY: clean
 clean:
