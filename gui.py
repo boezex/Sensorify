@@ -75,11 +75,11 @@ class GUI:
     def updateInstant (self):
         while True:
             if self.mode == 1 or self.isBusy:
-                self.maxPressureSlider.config(state=DISABLED,takefocus=0)
-                self.pressureDiffSlider.config(state=DISABLED,takefocus=0)
+                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey")
+                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey")
             else:
-                self.maxPressureSlider.config(state=NORMAL,takefocus=1)
-                self.pressureDiffSlider.config(state=NORMAL,takefocus=1)
+                self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "blue")
+                self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "blue")
 
     def updateGui (self):
         while True:
