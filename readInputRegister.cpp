@@ -19,11 +19,11 @@ int main (int argc, char *argv[])
 
     if (argc != 2)
     {
-        std:cerr << "Only pass 2 arguments!" << std::endl;
+        std::cerr << "Only pass 2 arguments!" << std::endl;
     }
 
     uint16_t result[1];
-    modbus_read_input_registers(connection, argv[1], 1, result);
+    modbus_read_input_registers(connection, (int) argv[1], 1, result);
 
     std::cout << result[0] << std::endl;
 

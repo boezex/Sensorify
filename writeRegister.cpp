@@ -19,10 +19,10 @@ int main (int argc, char *argv[])
 
     if (argc != 3)
     {
-        std:cerr << "Only pass 2 arguments!" << std::endl;
+        std::cerr << "Only pass 2 arguments!" << std::endl;
     }
 
-    modbus_write_register (connection, argv[1], argv[2]);
+    modbus_write_register (connection, (int) argv[1], (int) argv[2]);
 
     modbus_close(connection);
     modbus_free(connection);
