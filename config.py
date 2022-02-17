@@ -30,7 +30,7 @@ class Config:
             self.writeConfig ()
 
     def getMeasurementSettings (self):
-        return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval'], int(self.config['measurement']['description']))
+        return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval'])
 
     def setMeasurementSettings (self, mode, measurementTime, maxPressure, pressureInterval, description):
         self.config['measurement'] = {}

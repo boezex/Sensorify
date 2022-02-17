@@ -20,7 +20,7 @@ class GUI:
         self.window.title ("Sensorify (+config version)")
         self.window.geometry ("900x400")
         self.window.resizable (False,False)
-        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description = config.getMeasurementSettings ()
+        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval = config.getMeasurementSettings ()
         self.radioButtons = IntVar ()
         self.radioButtons.set (self.mode)
         self.isBusy = False
