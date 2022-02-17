@@ -112,5 +112,8 @@ class GUI:
         while True:
             self.diffPressActualLabel["text"] = str(self.pressureSensor.readPressure())
             self.tempActualLabel["text"] = str(self.pressureSensor.readTemperature())
-            self.fanSensorActualLabel["text"] = str(self.mainFan.getSensorSpeedActual())
+            sensorSpeed = self.mainFan.getSensorSpeedActual()
+            self.fanSensorActualLabel["text"] = str(sensorSpeed)
+            airflow = sensorSpeed * 472 / 40200
+            self.airFlowActualLabel["text"] = str(airflow)
             sleep(1)
