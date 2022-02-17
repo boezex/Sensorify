@@ -32,7 +32,7 @@ class PressureSensor:
     def isSetZero (self):
         return self.zeroIsSet
         
-    def toBigEndian(self, data):
+    def toLittleEndian(self, data):
         tmpData = data.to_bytes (2, 'big')
         return int.from_bytes(tmpData, 'little')
 
@@ -50,7 +50,7 @@ class PressureSensor:
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
             Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            RvBigEndian = self.toBigEndian (Rv)
+            RvBigEndian = self.toLittleEndian (Rv)
 
             actualPressure = (RvBigEndian - 1024) / 60000 * 250
             actualPressure -= self.compensation
@@ -67,7 +67,7 @@ class PressureSensor:
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
             Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            RvBigEndian = self.toBigEndian (Rv)
+            RvBigEndian = self.toLittleEndian (Rv)
 
             actualPressure = (RvBigEndian - 1024) / 60000 * 250
         finally:
@@ -83,7 +83,7 @@ class PressureSensor:
             self.i2cbus.write_i2c_block_data (self.i2c_address, self.START_ADDRESS, data)
 
             Rv = self.i2cbus.read_word_data (self.i2c_address, self.BUFFER_0)
-            RvBigEndian = self.toBigEndian (Rv)
+            RvBigEndian = self.toLittleEndian (Rv)
             
             actualTemperature = (RvBigEndian - 10214) / 37.39
         finally:

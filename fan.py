@@ -4,14 +4,25 @@ from gui import *
 
 class Fan:
 
-    def __init__(self):
+    def __init__ (self):
         self.mutex = Lock ()
         self.interface = None
+    
+    def __del__ (self):
+        self.setSpeedRaw (0)
 
     def setGUI (self, interface) -> None:
         self.interface = interface
 
+    def setSpeedPCT (self, pct) -> None:
+        if (pct > 100):
+            return
+        pct /= 100
+        speed = 65536 * pct
+
     def setSpeedRaw (self, speed) -> None:
+        if (speed > 65536):
+            return
         self.mutex.acquire ()
         try:
             result = subprocess.run (['./writeRegister', '53249', speed], capture_output=True)
@@ -19,6 +30,12 @@ class Fan:
                 self.interface.showError("Modbus error", "ModbusError!")
         finally:
             self.mutex.release ()
+
+    def getFanSpeedActualPCT (self) -> int:
+        speed = self.getFanSpeedActual ()
+        speed /= 65536
+        speed *= 100
+        return speed
 
     def getFanSpeedActual (self) -> int:
         self.mutex.acquire ()
