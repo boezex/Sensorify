@@ -73,7 +73,7 @@ class GUI:
         Label (self.window, text= "Object description:").grid (row=5, column=3, padx=6, pady=6)
         self.descriptionEntry = Entry (self.window)
         self.descriptionEntry.grid (row=5, column=4, padx=6, pady=6)
-        self.descriptionEntry.set (self.description)
+        #self.descriptionEntry.set (self.description)
 
         Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
     
