@@ -4,12 +4,12 @@ import config
 import fan
 
 conf = config.Config ()
-fannetje = fan.Fan ()
+mainFan = fan.Fan ()
 
 sens = pressuresensor.PressureSensor ()
-interface = gui.GUI (sens, conf)
+interface = gui.GUI (sens, conf, mainFan)
 
-fannetje.setGUI (interface)
+mainFan.setGUI (interface)
 
 print(sens.readPressure())
 interface.run ()

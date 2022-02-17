@@ -11,9 +11,10 @@ class GUI:
 
     CONSTANTS = 0
 
-    def __init__ (self, pressureSensor, config):
+    def __init__ (self, pressureSensor, config, fan):
         self.pressureSensor = pressureSensor
         self.config = config
+        self.mainFan = fan
 
         self.window = Tk ()
         self.window.title ("Sensorify (+config version)")
@@ -95,6 +96,7 @@ class GUI:
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description)
+        self.mainFan.setSpeedRaw(int(self.descriptionEntry))
 
     def updateInstant (self):
         while True:
