@@ -49,6 +49,19 @@ class Fan:
         finally:
             self.mutex.release ()
             return returnValue
+        
+    def getSensorSpeedActual (self) -> int:
+        self.mutex.acquire ()
+        returnValue = 0
+        try:
+            result = subprocess.run (['./readInputRegister', '53275'], capture_output=True)
+            if result.returncode == -1:
+                self.interface.showError("Modbus error", "ModbusError!")
+            else:
+                returnValue = int(result.stdout)
+        finally:
+            self.mutex.release ()
+            return returnValue
     
     def getSetValue (self) -> int:
         self.mutex.acquire ()

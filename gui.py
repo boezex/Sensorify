@@ -96,7 +96,7 @@ class GUI:
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description)
-        self.mainFan.setSpeedRaw(self.descriptionEntry.getint())
+        self.mainFan.setSpeedRaw(int(self.descriptionEntry.get()))
 
     def updateInstant (self):
         while True:
@@ -112,4 +112,5 @@ class GUI:
         while True:
             self.diffPressActualLabel["text"] = str(self.pressureSensor.readPressure())
             self.tempActualLabel["text"] = str(self.pressureSensor.readTemperature())
+            self.fanSensorActualLabel["text"] = str(self.mainFan.getSensorSpeedActual())
             sleep(1)
