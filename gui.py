@@ -96,7 +96,7 @@ class GUI:
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description)
-        self.mainFan.setSpeedRaw(int(self.descriptionEntry))
+        self.mainFan.setSpeedRaw(self.descriptionEntry.getint())
 
     def updateInstant (self):
         while True:
