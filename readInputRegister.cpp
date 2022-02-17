@@ -32,8 +32,9 @@ int main (int argc, char *argv[])
         return -1;
     }
 
+    uint16_t registeraddress = atoi (argv[1]);
     uint16_t result[1];
-    modbus_read_input_registers(connection, (int) argv[1], 1, result);
+    modbus_read_input_registers(connection, registeraddress, 1, result);
 
     std::cout << result[0] << std::endl;
 

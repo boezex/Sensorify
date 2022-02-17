@@ -25,8 +25,8 @@ class Fan:
             return
         self.mutex.acquire ()
         try:
-            result = subprocess.run (['./writeRegister', '53249', speed], capture_output=True)
-            if result.returncode is -1:
+            result = subprocess.run (['./writeRegister', '53249', str(speed)], capture_output=True)
+            if result.returncode == -1:
                 self.interface.showError("Modbus error", "ModbusError!")
         finally:
             self.mutex.release ()
@@ -42,7 +42,7 @@ class Fan:
         returnValue = 0
         try:
             result = subprocess.run (['./readInputRegister', '53264'], capture_output=True)
-            if result.returncode is -1:
+            if result.returncode == -1:
                 self.interface.showError("Modbus error", "ModbusError!")
             else:
                 returnValue = int(result.stdout)
@@ -55,7 +55,7 @@ class Fan:
         returnValue = 0
         try:
             result = subprocess.run (['./readInputRegister', '53274'], capture_output=True)
-            if result.returncode is -1:
+            if result.returncode == -1:
                 self.interface.showError("Modbus error", "ModbusError!")
             else:
                 returnValue = int(result.stdout)

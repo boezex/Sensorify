@@ -32,7 +32,10 @@ int main (int argc, char *argv[])
         return -1;
     }
 
-    modbus_write_register (connection, (int) argv[1], (int) argv[2]);
+    uint16_t registeraddress = atoi (argv[1]);
+    uint16_t value = atoi (argv[2]);
+
+    modbus_write_register (connection, registeraddress, value);
 
     modbus_close(connection);
     modbus_free(connection);
