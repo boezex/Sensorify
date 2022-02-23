@@ -2,6 +2,7 @@ from gui import *
 from fan import *
 from pressuresensor import *
 import time
+from threading import *
 
 
 class MeasurementController:
@@ -28,4 +29,5 @@ class MeasurementController:
             
 
     def startMeasurement (self, description):
-        self.setFanFromPressure (int(description))
+        self.setFanThread = Thread (target=self.setFanFromPressure, args=[int(description)])
+        self.setFanThread.start ()

@@ -8,8 +8,8 @@ conf = config.Config ()
 mainFan = fan.Fan ()
 
 sens = pressuresensor.PressureSensor ()
-msmcontroller = measurementcontroller.MeasurementController ()
-interface = gui.GUI (sens, conf, mainFan)
+msmcontroller = measurementcontroller.MeasurementController (mainFan, sens)
+interface = gui.GUI (sens, conf, mainFan, msmcontroller)
 
 mainFan.setGUI (interface)
 
