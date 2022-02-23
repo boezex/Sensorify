@@ -31,7 +31,7 @@ class GUI:
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
         Label (self.window, text="Fan Speed (actual, rpm / pct): ").grid (row = 2, padx=6, pady=6)
         Label (self.window, text="Fan Sensor value (actual, rpm): ").grid (row = 3, padx=6, pady=6)
-        Label (self.window, text="Air Flow (actual, m3/h): ").grid (row = 4, padx=6, pady=6)
+        Label (self.window, text="Air Flow (actual, l/s): ").grid (row = 4, padx=6, pady=6)
 
         Button (self.window, text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
 
@@ -47,7 +47,7 @@ class GUI:
         self.airFlowActualLabel = Label (self.window, text="0")
         self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=6, sticky="ns", padx=6, pady=6)
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=10, sticky="ns", padx=6, pady=6)
         Separator (self.window, orient='horizontal').grid (row=7, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
 
@@ -79,7 +79,10 @@ class GUI:
 
         Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
 
-        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 8, column=4, padx=6, pady=6)
+        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 9, column=0, padx=6, pady=6)
+        self.setFanEntry = Entry (self.window)
+        self.setFanEntry.grid (row=8, column=0, padx=6, pady=6)
+        Button (self.window, text="Start fan", command=lambda: self.mainFan.setSpeedRaw (int(self.setFanEntry.get()))).grid (row = 8, column=1, padx=6, pady=6)
     
     def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
@@ -101,7 +104,7 @@ class GUI:
         self.description = self.descriptionEntry.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description)
         #self.mainFan.setSpeedRaw(int(self.descriptionEntry.get()))
-        self.msmcontroller.startMeasurement (self.descriptionEntry.get())
+        self.msmcontroller.startMeasurement ()
 
     def updateInstant (self):
         while True:
@@ -122,5 +125,6 @@ class GUI:
             sensorSpeed = self.mainFan.getSensorSpeedActual ()
             self.fanSensorActualLabel["text"] = str(sensorSpeed)
             airflow = sensorSpeed * 472 / 40200
+            airflow /= 3.6
             self.airFlowActualLabel["text"] = str(round (airflow, 2))
             sleep(1)
