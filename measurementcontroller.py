@@ -1,3 +1,4 @@
+from audioop import avg
 from gui import *
 from fan import *
 from pressuresensor import *
@@ -11,6 +12,7 @@ class MeasurementController:
         self.fan = fan
         self.pressuresensor = pressuresensor
         self.interface = None
+        self.setFanThread = Thread (target=self.setFanFromPressure, args=[int(description)])
 
     def setGUI (self, interface) -> None:
         self.interface = interface
@@ -22,6 +24,19 @@ class MeasurementController:
             while (targetPressure > currentPressure):
                 self.fan.setSpeedRaw (currentFanSpeed + 100)
                 time.sleep (10)
+                averagePressures = []
+                for i in range (50):
+                    averagePressures.append (self.pressuresensor.readPressure())
+                    time.sleep (0.1)
+                averagePressure = sum (averagePressures) / len (averagePressures)
+                print (averagePressures)
+                print (averagePressure)
+                currentPressure = averagePressure
+                currentFanSpeed = self.fan.getSetValue()
+        if (targetPressure < currentPressure):
+            while (targetPressure < currentPressure):
+                self.fan.setSpeedRaw (currentFanSpeed - 100)
+                time.sleep (10)
                 currentPressure = self.pressuresensor.readPressure()
                 currentFanSpeed = self.fan.getSetValue()
 
@@ -29,5 +44,4 @@ class MeasurementController:
             
 
     def startMeasurement (self, description):
-        self.setFanThread = Thread (target=self.setFanFromPressure, args=[int(description)])
         self.setFanThread.start ()

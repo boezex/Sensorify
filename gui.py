@@ -31,7 +31,7 @@ class GUI:
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
         Label (self.window, text="Fan Speed (actual, rpm / pct): ").grid (row = 2, padx=6, pady=6)
         Label (self.window, text="Fan Sensor value (actual, rpm): ").grid (row = 3, padx=6, pady=6)
-        Label (self.window, text="Air Flow (actual, L/m): ").grid (row = 4, padx=6, pady=6)
+        Label (self.window, text="Air Flow (actual, m3/h): ").grid (row = 4, padx=6, pady=6)
 
         Button (self.window, text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
 
@@ -78,6 +78,8 @@ class GUI:
         #self.descriptionEntry.set (self.description)
 
         Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 6, column=3, columnspan=2, padx=6, pady=6)
+
+        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 8, column=4, padx=6, pady=6)
     
     def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
@@ -115,7 +117,9 @@ class GUI:
         while True:
             self.diffPressActualLabel["text"] = str(self.pressureSensor.readPressure())
             self.tempActualLabel["text"] = str(self.pressureSensor.readTemperature())
-            sensorSpeed = self.mainFan.getSensorSpeedActual()
+            fanSpeed = self.mainFan.getSetValue ()
+            self.fanSpeedActualLabel["text"] = str (fanSpeed)
+            sensorSpeed = self.mainFan.getSensorSpeedActual ()
             self.fanSensorActualLabel["text"] = str(sensorSpeed)
             airflow = sensorSpeed * 472 / 40200
             self.airFlowActualLabel["text"] = str(round (airflow, 2))
