@@ -5,16 +5,18 @@ from tkinter.ttk import Separator
 from pressuresensor import *
 from config import *
 from time import *
+from measurementcontroller import *
 import threading
 
 class GUI:
 
     CONSTANTS = 0
 
-    def __init__ (self, pressureSensor, config, fan):
+    def __init__ (self, pressureSensor, config, fan, msmcontroller):
         self.pressureSensor = pressureSensor
         self.config = config
         self.mainFan = fan
+        self.msmcontroller = msmcontroller
 
         self.window = Tk ()
         self.window.title ("Sensorify (+config version)")
@@ -96,7 +98,8 @@ class GUI:
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.description)
-        self.mainFan.setSpeedRaw(int(self.descriptionEntry.get()))
+        #self.mainFan.setSpeedRaw(int(self.descriptionEntry.get()))
+        self.msmcontroller.startMeasurement (self.descriptionEntry.get())
 
     def updateInstant (self):
         while True:
@@ -115,5 +118,5 @@ class GUI:
             sensorSpeed = self.mainFan.getSensorSpeedActual()
             self.fanSensorActualLabel["text"] = str(sensorSpeed)
             airflow = sensorSpeed * 472 / 40200
-            self.airFlowActualLabel["text"] = str(airflow)
+            self.airFlowActualLabel["text"] = str(round (airflow, 2))
             sleep(1)

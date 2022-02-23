@@ -1,6 +1,7 @@
 from gui import *
 from fan import *
 from pressuresensor import *
+import time
 
 
 class MeasurementController:
@@ -17,4 +18,14 @@ class MeasurementController:
         currentPressure = self.pressuresensor.readPressure()
         currentFanSpeed = self.fan.getSetValue()
         if (targetPressure > currentPressure):
+            while (targetPressure > currentPressure):
+                self.fan.setSpeedRaw (currentFanSpeed + 100)
+                time.sleep (10)
+                currentPressure = self.pressuresensor.readPressure()
+                currentFanSpeed = self.fan.getSetValue()
+
+
             
+
+    def startMeasurement (self, description):
+        self.setFanFromPressure (int(description))
