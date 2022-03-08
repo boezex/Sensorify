@@ -124,7 +124,7 @@ class GUI:
             self.fanSpeedActualLabel["text"] = str (fanSpeed)
             sensorSpeed = self.mainFan.getSensorSpeedActual ()
             self.fanSensorActualLabel["text"] = str(sensorSpeed)
-            airflow = sensorSpeed * 472 / 40200
-            airflow /= 3.6
-            self.airFlowActualLabel["text"] = str(round (airflow, 2))
+            #airflow = sensorSpeed * 472 / 40200
+            #airflow /= 3.6
+            self.airFlowActualLabel["text"] = str(round (self.mainFan.getAirflowActual(), 2))
             sleep(1)

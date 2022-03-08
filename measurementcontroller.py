@@ -53,12 +53,14 @@ class MeasurementController:
                 averagePressure = sum (averagePressures) / len (averagePressures)
                 currentPressure = averagePressure
                 currentFanSpeed = self.fan.getSetValue()
+            return
         if (self.targetPressure < currentPressure):
             while (self.targetPressure < currentPressure):
                 self.fan.setSpeedRaw (currentFanSpeed - 500)
                 time.sleep (30)
                 currentPressure = self.pressuresensor.readPressure()
                 currentFanSpeed = self.fan.getSetValue()
+            return
 
 
     def measure (self):
@@ -73,10 +75,10 @@ class MeasurementController:
                     averageAirflows = []
                     for i in range (measurementTime * 2):
                         averagePressures.append (self.pressuresensor.readPressure())
-                        sensorSpeed = self.fan.getSensorSpeedActual ()
-                        airflow = sensorSpeed * 472 / 40200
-                        airflow /= 3.6
-                        averageAirflows.append (airflow)
+                        #sensorSpeed = self.fan.getSensorSpeedActual ()
+                        #airflow = sensorSpeed * 472 / 40200
+                        #airflow /= 3.6
+                        averageAirflows.append (self.fan.getAirflowActual())
                         time.sleep (0.5)
                     averagePressure = sum (averagePressures) / len (averagePressures)
                     averageAirflow = sum (averageAirflows) / len (averageAirflows)
@@ -87,5 +89,5 @@ class MeasurementController:
 
 
     def startMeasurement (self):
-        if not self.measureThread.is_alive:
-            self.measureThread.start ()
+        #if not self.measureThread.is_alive:
+        self.measureThread.start ()

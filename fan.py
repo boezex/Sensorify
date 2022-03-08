@@ -65,6 +65,21 @@ class Fan:
             self.mutex.release ()
             return returnValue
     
+    def getAirflowActual (self) -> int:
+        self.mutex.acquire ()
+        returnValue = 0
+        try:
+            result = subprocess.run (['./readInputRegister', '53299'], capture_output=True)
+            if result.returncode == -1:
+                self.interface.showError("Modbus error", "ModbusError!")
+            else:
+                returnValue = int(result.stdout)
+                returnValue /= 3.6
+        finally:
+            self.mutex.release ()
+            return returnValue
+
+    
     def getSetValue (self) -> int:
         return self.setValue
 
