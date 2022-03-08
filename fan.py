@@ -7,6 +7,7 @@ class Fan:
     def __init__ (self):
         self.mutex = Lock ()
         self.interface = None
+        self.setValue = 0
     
     def __del__ (self):
         self.setSpeedRaw (0)
@@ -24,6 +25,7 @@ class Fan:
         if (speed > 65536):
             return
         self.mutex.acquire ()
+        self.setValue = speed
         try:
             result = subprocess.run (['./writeRegister', '53249', str(speed)], capture_output=True)
             if result.returncode == -1:
@@ -64,16 +66,6 @@ class Fan:
             return returnValue
     
     def getSetValue (self) -> int:
-        self.mutex.acquire ()
-        returnValue = 0
-        try:
-            result = subprocess.run (['./readInputRegister', '53274'], capture_output=True)
-            if result.returncode == -1:
-                self.interface.showError("Modbus error", "ModbusError!")
-            else:
-                returnValue = int(result.stdout)
-        finally:
-            self.mutex.release ()
-            return returnValue
+        return self.setValue
 
     

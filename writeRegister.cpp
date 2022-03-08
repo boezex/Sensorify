@@ -35,11 +35,20 @@ int main (int argc, char *argv[])
     uint16_t registeraddress = atoi (argv[1]);
     uint16_t value = atoi (argv[2]);
 
-    modbus_write_register (connection, registeraddress, value);
+    if (modbus_write_register (connection, registeraddress, value) == 1)
+    {
+        modbus_close(connection);
+        modbus_free(connection);
 
-    modbus_close(connection);
-    modbus_free(connection);
+        return 0;
+    }
+    else
+    {
+        modbus_close(connection);
+        modbus_free(connection);
+        std::cerr << "Transaction failed!" << std::endl;
 
-    return 0;
+        return -1;
+    }
 
 }

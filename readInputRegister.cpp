@@ -34,13 +34,22 @@ int main (int argc, char *argv[])
 
     uint16_t registeraddress = atoi (argv[1]);
     uint16_t result[1];
-    modbus_read_input_registers(connection, registeraddress, 1, result);
+    if (modbus_read_input_registers(connection, registeraddress, 1, result) == 1)
+    {
+        std::cout << result[0] << std::endl;
 
-    std::cout << result[0] << std::endl;
+        modbus_close(connection);
+        modbus_free(connection);
 
-    modbus_close(connection);
-    modbus_free(connection);
+        return 0;
+    }
+    else
+    {
+        modbus_close(connection);
+        modbus_free(connection);
+        std::cerr << "Transaction failed!" << std::endl;
 
-    return 0;
+        return -1;
+    }
 
 }
