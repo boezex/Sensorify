@@ -86,6 +86,6 @@ class MeasurementController:
                     writer.writerow([averagePressure, averageAirflow])
 
 
-    def startMeasurement (self, description):
+    def startMeasurement (self):
         if not self.measureThread.is_alive:
             self.measureThread.start ()
