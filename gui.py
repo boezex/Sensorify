@@ -48,9 +48,8 @@ class GUI:
         self.airFlowActualLabel = Label (self.window, text="0")
         self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=10, sticky="ns", padx=6, pady=6)
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=12, sticky="ns", padx=6, pady=6)
         Separator (self.window, orient='horizontal').grid (row=8, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
-
 
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal', resolution=10)

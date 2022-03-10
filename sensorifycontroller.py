@@ -12,6 +12,7 @@ msmcontroller = measurementcontroller.MeasurementController (mainFan, sens, conf
 interface = gui.GUI (sens, conf, mainFan, msmcontroller)
 
 mainFan.setGUI (interface)
+msmcontroller.setGUI (interface)
 
 print(sens.readPressure())
 interface.run ()
