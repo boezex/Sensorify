@@ -23,8 +23,7 @@ class GUI:
         self.window.geometry ("1000x600")
         self.window.resizable (False,False)
         self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting = self.config.getMeasurementSettings ()
-        self.description = StringVar
-        self.description.set(self.config.getDescriptionSettings ())
+        self.description = StringVar (self.window, self.config.getDescriptionSettings ())
         self.radioButtons = IntVar ()
         self.radioButtons.set (self.mode)
         self.isBusy = False
