@@ -34,7 +34,7 @@ class GUI:
         Label (self.window, text="Fan Sensor value (actual, rpm): ").grid (row = 3, padx=6, pady=6)
         Label (self.window, text="Air Flow (actual, l/s): ").grid (row = 4, padx=6, pady=6)
 
-        Button (self.window, text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero()).grid (row = 6, columnspan=2, padx=6, pady=6)
+        Button (self.window, text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero()).grid (row = 7, columnspan=2, padx=6, pady=6)
 
         self.diffPressActualLabel = Label (self.window, text="0")
         self.diffPressActualLabel.grid (row=0, column=1, padx=6, pady=6)
@@ -74,8 +74,8 @@ class GUI:
         self.pressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Is zero-measurement: ").grid (row=5, column=3, padx=6, pady=6)
-        self.isNulmetingButton = Checkbutton (self.window)
-        self.isNulmetingButton.grid (row=5, column=4, padx=6, pady=6)
+        self.isNulmetingButton = IntVar()
+        Checkbutton (self.window, variable=self.isNulmetingButton).grid (row=5, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Object description:").grid (row=6, column=3, padx=6, pady=6)
         self.descriptionEntry = Entry (self.window, textvariable=self.description)
@@ -83,27 +83,27 @@ class GUI:
 
         Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
 
-        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 9, column=0, padx=6, pady=6)
+        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 10, column=0, padx=6, pady=6)
         self.setFanEntry = Entry (self.window)
-        self.setFanEntry.grid (row=8, column=0, padx=6, pady=6)
-        Button (self.window, text="Start fan", command=lambda: self.mainFan.setSpeedRaw (int(self.setFanEntry.get()))).grid (row = 8, column=1, padx=6, pady=6)
+        self.setFanEntry.grid (row=9, column=0, padx=6, pady=6)
+        Button (self.window, text="Start fan", command=lambda: self.mainFan.setSpeedRaw (int(self.setFanEntry.get()))).grid (row = 9, column=1, padx=6, pady=6)
 
-        Label (self.window, text="Current target pressure (Pa):").grid (row = 8, column = 3, padx=6, pady=6)
-        Label (self.window, text="Current stage:").grid (row = 9, column = 3, padx=6, pady=6)
-        Label (self.window, text="Previous average pressure difference (Pa):").grid (row = 10, column = 3, padx=6, pady=6)
-        Label (self.window, text="Previous average air flow (l/s): ").grid (row = 11, column = 3, padx=6, pady=6)
+        Label (self.window, text="Current target pressure (Pa):").grid (row = 9, column = 3, padx=6, pady=6)
+        Label (self.window, text="Current stage:").grid (row = 10, column = 3, padx=6, pady=6)
+        Label (self.window, text="Previous average pressure difference (Pa):").grid (row = 11, column = 3, padx=6, pady=6)
+        Label (self.window, text="Previous average air flow (l/s): ").grid (row = 12, column = 3, padx=6, pady=6)
 
         self.targetPressureLabel = Label (self.window, text="0")
-        self.targetPressureLabel.grid (row=8, column=4, padx=6, pady=6)
+        self.targetPressureLabel.grid (row=9, column=4, padx=6, pady=6)
 
         self.currentStageLabel = Label (self.window, text="None")
-        self.currentStageLabel.grid (row=9, column=4, padx=6, pady=6)
+        self.currentStageLabel.grid (row=10, column=4, padx=6, pady=6)
 
         self.previousPressureLabel = Label (self.window, text="0")
-        self.previousPressureLabel.grid (row=10, column=4, padx=6, pady=6)
+        self.previousPressureLabel.grid (row=11, column=4, padx=6, pady=6)
 
         self.previousAirFlowLabel = Label (self.window, text="0")
-        self.previousAirFlowLabel.grid (row=11, column=4, padx=6, pady=6)
+        self.previousAirFlowLabel.grid (row=12, column=4, padx=6, pady=6)
     
     def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
@@ -131,7 +131,7 @@ class GUI:
         self.maxPressure = self.maxPressureSlider.get ()
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
-        self.isNulmeting = self.isNulmetingButton.getint ()
+        self.isNulmeting = self.isNulmetingButton.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.description)
         
         self.msmcontroller.startMeasurement ()
