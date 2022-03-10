@@ -25,19 +25,19 @@ class MeasurementController:
         if isNulmeting:
             if (self.targetPressure > currentPressure):
                 if (self.targetPressure - currentPressure) > 5:
-                    return 600
+                    return 400
                 elif (self.targetPressure - currentPressure) > 3:
-                    return 300
+                    return 200
                 else:
-                    return 150
+                    return 100
         else:
             if (self.targetPressure > currentPressure):
                 if (self.targetPressure - currentPressure) > 5:
                     return 1000
                 elif (self.targetPressure - currentPressure) > 3:
-                    return 400
+                    return 600
                 else:
-                    return 200
+                    return 300
 
     def setFanFromPressure (self, isNulmeting):
         currentPressure = self.pressuresensor.readPressure()
@@ -68,7 +68,7 @@ class MeasurementController:
     def measure (self):
         mode, measurementTime, maxPressure, pressureInterval, isNulmeting = self.conf.getMeasurementSettings ()
         self.interface.setCurrentStageAndPressure ("starting", pressureInterval)
-        filename = "Meting xxx.csv"
+        filename = "/home/pi/Desktop/metingen/Meting: " + self.conf.getDescriptionSettings() + ".csv"
         with open(filename, 'w', newline='') as file:
             writer = csv.writer (file)
 
