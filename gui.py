@@ -23,7 +23,8 @@ class GUI:
         self.window.geometry ("1000x600")
         self.window.resizable (False,False)
         self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting = self.config.getMeasurementSettings ()
-        self.description = self.config.getDescriptionSettings ()
+        self.description = StringVar
+        self.description.set(self.config.getDescriptionSettings ())
         self.radioButtons = IntVar ()
         self.radioButtons.set (self.mode)
         self.isBusy = False
@@ -78,9 +79,8 @@ class GUI:
         self.isNulmetingButton.grid (row=5, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Object description:").grid (row=6, column=3, padx=6, pady=6)
-        self.descriptionEntry = Entry (self.window)
+        self.descriptionEntry = Entry (self.window, textvariable=self.description)
         self.descriptionEntry.grid (row=6, column=4, padx=6, pady=6)
-        self.descriptionEntry.set (self.description)
 
         Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
 
