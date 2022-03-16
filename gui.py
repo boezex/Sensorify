@@ -20,7 +20,7 @@ class GUI:
 
         self.window = Tk ()
         self.window.title ("Sensorify V0.9")
-        self.window.geometry ("1000x600")
+        self.window.geometry ("1100x600")
         self.window.resizable (False,False)
         self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting = self.config.getMeasurementSettings ()
         self.description = StringVar (self.window, self.config.getDescriptionSettings ())
@@ -73,8 +73,9 @@ class GUI:
         self.pressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Is zero-measurement: ").grid (row=5, column=3, padx=6, pady=6)
-        self.isNulmetingButton = IntVar()
-        Checkbutton (self.window, variable=self.isNulmetingButton).grid (row=5, column=4, padx=6, pady=6)
+        self.isNulmetingButtonValue = IntVar()
+        self.isNulmetingButton = Checkbutton (self.window, variable=self.isNulmetingButtonValue)
+        self.isNulmetingButton.grid (row=5, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Object description:").grid (row=6, column=3, padx=6, pady=6)
         self.descriptionEntry = Entry (self.window, textvariable=self.description)
@@ -137,7 +138,7 @@ class GUI:
         self.maxPressure = self.maxPressureSlider.get ()
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
-        self.isNulmeting = self.isNulmetingButton.get ()
+        self.isNulmeting = self.isNulmetingButtonValue.get ()
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.description)
         
         self.msmcontroller.startMeasurement ()
@@ -179,7 +180,7 @@ class GUI:
                 self.descriptionEntry.config(state=DISABLED)
                 self.setAirFlowEntry.config(state=DISABLED)
                 self.setPressureDifferenceEntry.config(state=DISABLED)
-                self.isNulmetingButton.config(state=DISABLED)
+                self.isNulmetingButtonValue.config(state=DISABLED)
                 self.nenRadioButton.config(state=DISABLED)
                 self.customRadioButton.config(state=DISABLED)
             else:
@@ -190,7 +191,7 @@ class GUI:
                 self.descriptionEntry.config(state=NORMAL)
                 self.setAirFlowEntry.config(state=NORMAL)
                 self.setPressureDifferenceEntry.config(state=NORMAL)
-                self.isNulmetingButton.config(state=NORMAL)
+                self.isNulmetingButtonValue.config(state=NORMAL)
                 self.nenRadioButton.config(state=NORMAL)
                 self.customRadioButton.config(state=NORMAL)
             
