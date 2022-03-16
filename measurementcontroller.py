@@ -25,19 +25,19 @@ class MeasurementController:
         if isNulmeting:
             if (self.targetPressure > currentPressure):
                 if (self.targetPressure - currentPressure) > 5:
-                    return 400
-                elif (self.targetPressure - currentPressure) > 3:
                     return 200
+                elif (self.targetPressure - currentPressure) > 3:
+                    return 150
                 else:
                     return 100
         else:
             if (self.targetPressure > currentPressure):
                 if (self.targetPressure - currentPressure) > 5:
-                    return 1000
+                    return 750
                 elif (self.targetPressure - currentPressure) > 3:
-                    return 600
+                    return 500
                 else:
-                    return 300
+                    return 150
 
     def setFanFromPressure (self, isNulmeting):
         currentPressure = self.pressuresensor.readPressure()
@@ -47,7 +47,7 @@ class MeasurementController:
                 if (self.stopFlag):
                     return
                 self.fan.setSpeedRaw (currentFanSpeed + self.getIncreaseStep(currentPressure, isNulmeting))
-                time.sleep (30)
+                time.sleep (45)
                 averagePressures = []
                 for i in range (10):
                     averagePressures.append (self.pressuresensor.readPressure())

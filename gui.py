@@ -30,7 +30,7 @@ class GUI:
 
         Label (self.window, text="Differential pressure (actual, Pa): ").grid (row = 0, padx=6, pady=6)
         Label (self.window, text="Temperature (actual, dgrC): ").grid (row = 1, padx=6, pady=6)
-        Label (self.window, text="Fan Speed (actual, rpm / pct): ").grid (row = 2, padx=6, pady=6)
+        Label (self.window, text="Fan Sensor value (target, rpm): ").grid (row = 2, padx=6, pady=6)
         Label (self.window, text="Fan Sensor value (actual, rpm): ").grid (row = 3, padx=6, pady=6)
         Label (self.window, text="Air Flow (actual, l/s): ").grid (row = 4, padx=6, pady=6)
 
@@ -48,7 +48,7 @@ class GUI:
         self.airFlowActualLabel = Label (self.window, text="0")
         self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=12, sticky="ns", padx=6, pady=6)
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=14, sticky="ns", padx=6, pady=6)
         Separator (self.window, orient='horizontal').grid (row=8, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
