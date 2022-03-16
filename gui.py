@@ -81,7 +81,7 @@ class GUI:
         self.descriptionEntry = Entry (self.window, textvariable=self.description)
         self.descriptionEntry.grid (row=6, column=4, padx=6, pady=6)
 
-        self.startMeasurementButton = Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0"))
+        self.startMeasurementButton = Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if self.ressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0"))
         self.startMeasurementButton.grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
 
         Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 11, column=0, padx=6, pady=6)
@@ -180,18 +180,18 @@ class GUI:
                 self.descriptionEntry.config(state=DISABLED)
                 self.setAirFlowEntry.config(state=DISABLED)
                 self.setPressureDifferenceEntry.config(state=DISABLED)
-                self.isNulmetingButtonValue.config(state=DISABLED)
+                self.isNulmetingButton.config(state=DISABLED)
                 self.nenRadioButton.config(state=DISABLED)
                 self.customRadioButton.config(state=DISABLED)
             else:
                 self.measurementTimeSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
                 self.setAirFlowButton.config(state=NORMAL)
                 self.setPressureDifferenceButton.config(state=NORMAL)
-                self.startMeasurementButton.config(text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero())
+                self.startMeasurementButton.config(text="Start measurement!", command=lambda: self.startMeasurement() if self.pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0"))
                 self.descriptionEntry.config(state=NORMAL)
                 self.setAirFlowEntry.config(state=NORMAL)
                 self.setPressureDifferenceEntry.config(state=NORMAL)
-                self.isNulmetingButtonValue.config(state=NORMAL)
+                self.isNulmetingButton.config(state=NORMAL)
                 self.nenRadioButton.config(state=NORMAL)
                 self.customRadioButton.config(state=NORMAL)
             
