@@ -87,7 +87,7 @@ class GUI:
         Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 11, column=0, padx=6, pady=6)
         self.setAirFlowEntry = Entry (self.window)
         self.setAirFlowEntry.grid (row=9, column=0, padx=6, pady=6)
-        self.setAirFlowButton = Button (self.window, text="Set AirFlow (l/s)", command=lambda: self.mainFan.setSpeedRaw (int(self.setAirFlowEntry.get() * 329)))
+        self.setAirFlowButton = Button (self.window, text="Set AirFlow (l/s)", command=lambda: self.mainFan.setSpeedRaw (int(int(self.setAirFlowEntry.get()) * 329)))
         self.setAirFlowButton.grid (row = 9, column=1, padx=6, pady=6)
 
         self.setPressureDifferenceEntry = Entry (self.window)
@@ -176,7 +176,7 @@ class GUI:
                 self.measurementTimeSlider.config(state=DISABLED,troughcolor = "grey")
                 self.setAirFlowButton.config(state=DISABLED)
                 self.setPressureDifferenceButton.config(state=DISABLED)
-                self.startMeasurementButton.config(text="Stop measurement!", command=self.msmcontroller.emergencyStop())
+                self.startMeasurementButton.config(text="Stop measurement!", command=lambda: self.msmcontroller.emergencyStop())
                 self.descriptionEntry.config(state=DISABLED)
                 self.setAirFlowEntry.config(state=DISABLED)
                 self.setPressureDifferenceEntry.config(state=DISABLED)
