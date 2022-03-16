@@ -77,7 +77,7 @@ class MeasurementController:
                     if (self.stopFlag):
                         self.stopFlag = False
                         self.fan.setSpeedRaw (0)
-                        self.interface.stopMeasurement ()
+                        self.interface.stopMeasurement (None)
                         return
                     self.targetPressure = pressure
                     self.interface.setCurrentStageAndPressure ("setting correct fan speed", self.targetPressure)
@@ -85,7 +85,7 @@ class MeasurementController:
                     if (self.stopFlag):
                         self.stopFlag = False
                         self.fan.setSpeedRaw (0)
-                        self.interface.stopMeasurement ()
+                        self.interface.stopMeasurement (None)
                         return
                     self.interface.setCurrentStageAndPressure ("measuring", self.targetPressure)
                     averagePressures = []
