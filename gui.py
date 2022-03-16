@@ -80,12 +80,19 @@ class GUI:
         self.descriptionEntry = Entry (self.window, textvariable=self.description)
         self.descriptionEntry.grid (row=6, column=4, padx=6, pady=6)
 
-        Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0")).grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
+        self.startMeasurementButton = Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if pressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0"))
+        self.startMeasurementButton.grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
 
-        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 10, column=0, padx=6, pady=6)
-        self.setFanEntry = Entry (self.window)
-        self.setFanEntry.grid (row=9, column=0, padx=6, pady=6)
-        Button (self.window, text="Start fan", command=lambda: self.mainFan.setSpeedRaw (int(self.setFanEntry.get()))).grid (row = 9, column=1, padx=6, pady=6)
+        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 11, column=0, padx=6, pady=6)
+        self.setAirFlowEntry = Entry (self.window)
+        self.setAirFlowEntry.grid (row=9, column=0, padx=6, pady=6)
+        self.setAirFlowButton = Button (self.window, text="Set AirFlow (l/s)", command=lambda: self.mainFan.setSpeedRaw (int(self.setAirFlowEntry.get() * 329)))
+        self.setAirFlowButton.grid (row = 9, column=1, padx=6, pady=6)
+
+        self.setPressureDifferenceEntry = Entry (self.window)
+        self.setPressureDifferenceEntry.grid (row=10, column=0, padx=6, pady=6)
+        self.setPressureDifferenceButton = Button (self.window, text="Set Pressure diff (Pa)", command=lambda: self.startSetFromPressure())
+        self.setPressureDifferenceButton.grid (row = 10, column=1, padx=6, pady=6)
 
         Label (self.window, text="Current target pressure (Pa):").grid (row = 9, column = 3, padx=6, pady=6)
         Label (self.window, text="Current stage:").grid (row = 10, column = 3, padx=6, pady=6)
@@ -134,6 +141,15 @@ class GUI:
         self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.description)
         
         self.msmcontroller.startMeasurement ()
+
+    def startSetFromPressure (self):
+        self.isBusy = True
+
+        self.msmcontroller.startSetFromPressure (int(self.setPressureDifferenceEntry.get()))
+
+    def stopSetFromPressure (self):
+        self.currentStageLabel["text"] = "Finished!"
+        self.isBusy = False
     
     def stopMeasurement (self, filename):
         if filename != None:
@@ -155,6 +171,29 @@ class GUI:
             else:
                 self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
                 self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
+            if self.isBusy:
+                self.measurementTimeSlider.config(state=DISABLED,troughcolor = "grey")
+                self.setAirFlowButton.config(state=DISABLED)
+                self.setPressureDifferenceButton.config(state=DISABLED)
+                self.startMeasurementButton.config(text="Stop measurement!", command=self.msmcontroller.emergencyStop())
+                self.descriptionEntry.config(state=DISABLED)
+                self.setAirFlowEntry.config(state=DISABLED)
+                self.setPressureDifferenceEntry.config(state=DISABLED)
+                self.isNulmetingButton.config(state=DISABLED)
+                self.nenRadioButton.config(state=DISABLED)
+                self.customRadioButton.config(state=DISABLED)
+            else:
+                self.measurementTimeSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
+                self.setAirFlowButton.config(state=NORMAL)
+                self.setPressureDifferenceButton.config(state=NORMAL)
+                self.startMeasurementButton.config(text="Set pressure sensor 0.0", command=lambda: showerror ("Busy", "Can't set pressure sensor 0.0, currently busy!") if self.isBusy else self.pressureSensor.setZero())
+                self.descriptionEntry.config(state=NORMAL)
+                self.setAirFlowEntry.config(state=NORMAL)
+                self.setPressureDifferenceEntry.config(state=NORMAL)
+                self.isNulmetingButton.config(state=NORMAL)
+                self.nenRadioButton.config(state=NORMAL)
+                self.customRadioButton.config(state=NORMAL)
+            
 
     def updateGui (self):
         while True:

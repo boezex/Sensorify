@@ -14,7 +14,7 @@ class MeasurementController:
         self.pressuresensor = pressuresensor
         self.interface = None
         self.conf = conf
-        self.measureThread = Thread (target=self.measure)
+        self.workThread = Thread (target=self.measure)
         self.targetPressure = 0
         self.stopFlag = False
 
@@ -101,10 +101,21 @@ class MeasurementController:
         self.fan.setSpeedRaw (0)
         self.interface.stopMeasurement (filename)
 
+    def setFanFromPressureWrapper (self):
+        self.interface.setCurrentStageAndPressure ("setting correct fan speed", self.targetPressure)
+        self.setFanFromPressure (False)
+        self.interface.stopSetFromPressure ()
 
     def startMeasurement (self):
-        #if not self.measureThread.is_alive:
-        self.measureThread.start ()
+        #if not self.workThread.is_alive:
+        self.workThread = Thread (target=self.measure)
+        self.workThread.start ()
+
+    def startSetFromPressure (self, targetPressure):
+        self.workThread = Thread (target=self.setFanFromPressureWrapper)
+        self.targetPressure = targetPressure
+        self.workThread.start ()
 
     def emergencyStop (self):
+        self.fan.setSpeedRaw(0)
         self.stopFlag = True
