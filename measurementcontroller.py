@@ -24,7 +24,9 @@ class MeasurementController:
     def getIncreaseStep (self, currentPressure, isNulmeting):
         if isNulmeting:
             if (self.targetPressure > currentPressure):
-                if (self.targetPressure - currentPressure) > 5:
+                if (self.targetPressure - currentPressure) > 10:
+                    return 300
+                elif (self.targetPressure - currentPressure) > 5:
                     return 200
                 elif (self.targetPressure - currentPressure) > 3:
                     return 150
@@ -32,7 +34,9 @@ class MeasurementController:
                     return 100
         else:
             if (self.targetPressure > currentPressure):
-                if (self.targetPressure - currentPressure) > 5:
+                if (self.targetPressure - currentPressure) > 10:
+                    return 1500
+                elif (self.targetPressure - currentPressure) > 5:
                     return 750
                 elif (self.targetPressure - currentPressure) > 3:
                     return 500
@@ -58,9 +62,16 @@ class MeasurementController:
             return
         if (self.targetPressure < currentPressure):
             while (self.targetPressure < currentPressure):
-                self.fan.setSpeedRaw (currentFanSpeed - 500)
-                time.sleep (30)
-                currentPressure = self.pressuresensor.readPressure()
+                if (self.stopFlag):
+                    return
+                self.fan.setSpeedRaw (currentFanSpeed - self.getIncreaseStep(currentPressure, isNulmeting))
+                time.sleep (45)
+                averagePressures = []
+                for i in range (10):
+                    averagePressures.append (self.pressuresensor.readPressure())
+                    time.sleep (0.5)
+                averagePressure = sum (averagePressures) / len (averagePressures)
+                currentPressure = averagePressure
                 currentFanSpeed = self.fan.getSetValue()
             return
 

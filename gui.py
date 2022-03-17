@@ -79,7 +79,7 @@ class GUI:
 
         Label (self.window, text= "Is backward-measurement: ").grid (row=6, column=3, padx=6, pady=6)
         self.isBackMeasurementButtonValue = IntVar()
-        self.isBackMeasurementButton = Checkbutton (self.window, variable=self.isNulmetingButtonValue)
+        self.isBackMeasurementButton = Checkbutton (self.window, variable=self.isBackMeasurementButtonValue)
         self.isBackMeasurementButton.grid (row=6, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Object description:").grid (row=7, column=3, padx=6, pady=6)
@@ -187,6 +187,7 @@ class GUI:
                 self.setAirFlowEntry.config(state=DISABLED)
                 self.setPressureDifferenceEntry.config(state=DISABLED)
                 self.isNulmetingButton.config(state=DISABLED)
+                self.isBackMeasurementButton.config(state=DISABLED)
                 self.nenRadioButton.config(state=DISABLED)
                 self.customRadioButton.config(state=DISABLED)
             else:
@@ -198,6 +199,7 @@ class GUI:
                 self.setAirFlowEntry.config(state=NORMAL)
                 self.setPressureDifferenceEntry.config(state=NORMAL)
                 self.isNulmetingButton.config(state=NORMAL)
+                self.isBackMeasurementButton.config(state=NORMAL)
                 self.nenRadioButton.config(state=NORMAL)
                 self.customRadioButton.config(state=NORMAL)
             
