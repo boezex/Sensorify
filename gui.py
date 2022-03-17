@@ -19,10 +19,10 @@ class GUI:
         self.msmcontroller = msmcontroller
 
         self.window = Tk ()
-        self.window.title ("Sensorify V0.9")
+        self.window.title ("Sensorify V1.0")
         self.window.geometry ("1100x600")
         self.window.resizable (False,False)
-        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting = self.config.getMeasurementSettings ()
+        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.isBackMeasurement = self.config.getMeasurementSettings ()
         self.description = StringVar (self.window, self.config.getDescriptionSettings ())
         self.radioButtons = IntVar ()
         self.radioButtons.set (self.mode)
@@ -49,7 +49,7 @@ class GUI:
         self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
 
         Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=14, sticky="ns", padx=6, pady=6)
-        Separator (self.window, orient='horizontal').grid (row=8, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
+        Separator (self.window, orient='horizontal').grid (row=9, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
         self.measurementTimeSlider = Scale (self.window, from_=10, to=240, orient='horizontal', resolution=10)
@@ -77,40 +77,45 @@ class GUI:
         self.isNulmetingButton = Checkbutton (self.window, variable=self.isNulmetingButtonValue)
         self.isNulmetingButton.grid (row=5, column=4, padx=6, pady=6)
 
-        Label (self.window, text= "Object description:").grid (row=6, column=3, padx=6, pady=6)
+        Label (self.window, text= "Is backward-measurement: ").grid (row=6, column=3, padx=6, pady=6)
+        self.isBackMeasurementButtonValue = IntVar()
+        self.isBackMeasurementButton = Checkbutton (self.window, variable=self.isNulmetingButtonValue)
+        self.isBackMeasurementButton.grid (row=6, column=4, padx=6, pady=6)
+
+        Label (self.window, text= "Object description:").grid (row=7, column=3, padx=6, pady=6)
         self.descriptionEntry = Entry (self.window, textvariable=self.description)
         self.descriptionEntry.grid (row=6, column=4, padx=6, pady=6)
 
         self.startMeasurementButton = Button (self.window, text="Start measurement!", command=lambda: self.startMeasurement() if self.ressureSensor.zeroIsSet else showerror ("0.0 not set", "Before starting a measurement, please set pressure sensor 0.0"))
-        self.startMeasurementButton.grid (row = 7, column=3, columnspan=2, padx=6, pady=6)
+        self.startMeasurementButton.grid (row = 8, column=3, columnspan=2, padx=6, pady=6)
 
-        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 11, column=0, padx=6, pady=6)
+        Button (self.window, text="Stop fan", command=lambda: self.mainFan.setSpeedRaw (0)).grid (row = 12, column=0, padx=6, pady=6)
         self.setAirFlowEntry = Entry (self.window)
-        self.setAirFlowEntry.grid (row=9, column=0, padx=6, pady=6)
+        self.setAirFlowEntry.grid (row=10, column=0, padx=6, pady=6)
         self.setAirFlowButton = Button (self.window, text="Set AirFlow (l/s)", command=lambda: self.mainFan.setSpeedRaw (int(int(self.setAirFlowEntry.get()) * 329)))
-        self.setAirFlowButton.grid (row = 9, column=1, padx=6, pady=6)
+        self.setAirFlowButton.grid (row = 10, column=1, padx=6, pady=6)
 
         self.setPressureDifferenceEntry = Entry (self.window)
-        self.setPressureDifferenceEntry.grid (row=10, column=0, padx=6, pady=6)
+        self.setPressureDifferenceEntry.grid (row=11, column=0, padx=6, pady=6)
         self.setPressureDifferenceButton = Button (self.window, text="Set Pressure diff (Pa)", command=lambda: self.startSetFromPressure())
-        self.setPressureDifferenceButton.grid (row = 10, column=1, padx=6, pady=6)
+        self.setPressureDifferenceButton.grid (row = 11, column=1, padx=6, pady=6)
 
-        Label (self.window, text="Current target pressure (Pa):").grid (row = 9, column = 3, padx=6, pady=6)
-        Label (self.window, text="Current stage:").grid (row = 10, column = 3, padx=6, pady=6)
-        Label (self.window, text="Previous average pressure difference (Pa):").grid (row = 11, column = 3, padx=6, pady=6)
-        Label (self.window, text="Previous average air flow (l/s): ").grid (row = 12, column = 3, padx=6, pady=6)
+        Label (self.window, text="Current target pressure (Pa):").grid (row = 10, column = 3, padx=6, pady=6)
+        Label (self.window, text="Current stage:").grid (row = 11, column = 3, padx=6, pady=6)
+        Label (self.window, text="Previous average pressure difference (Pa):").grid (row = 12, column = 3, padx=6, pady=6)
+        Label (self.window, text="Previous average air flow (l/s): ").grid (row = 13, column = 3, padx=6, pady=6)
 
         self.targetPressureLabel = Label (self.window, text="0")
-        self.targetPressureLabel.grid (row=9, column=4, padx=6, pady=6)
+        self.targetPressureLabel.grid (row=10, column=4, padx=6, pady=6)
 
         self.currentStageLabel = Label (self.window, text="None")
-        self.currentStageLabel.grid (row=10, column=4, padx=6, pady=6)
+        self.currentStageLabel.grid (row=11, column=4, padx=6, pady=6)
 
         self.previousPressureLabel = Label (self.window, text="0")
-        self.previousPressureLabel.grid (row=11, column=4, padx=6, pady=6)
+        self.previousPressureLabel.grid (row=12, column=4, padx=6, pady=6)
 
         self.previousAirFlowLabel = Label (self.window, text="0")
-        self.previousAirFlowLabel.grid (row=12, column=4, padx=6, pady=6)
+        self.previousAirFlowLabel.grid (row=13, column=4, padx=6, pady=6)
     
     def run (self):
         self.updateThread = Thread (target=self.updateGui, daemon=True)
@@ -139,7 +144,8 @@ class GUI:
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
         self.isNulmeting = self.isNulmetingButtonValue.get ()
-        self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.description)
+        self.isBackMeasurement = self.isBackMeasurementButtonValue.get ()
+        self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.isBackMeasurement, self.description)
         
         self.msmcontroller.startMeasurement ()
 

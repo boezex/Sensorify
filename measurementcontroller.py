@@ -66,38 +66,59 @@ class MeasurementController:
 
 
     def measure (self):
-        mode, measurementTime, maxPressure, pressureInterval, isNulmeting = self.conf.getMeasurementSettings ()
+        mode, measurementTime, maxPressure, pressureInterval, isNulmeting, isBackwardMeasurement = self.conf.getMeasurementSettings ()
         self.interface.setCurrentStageAndPressure ("starting", pressureInterval)
-        filename = "/home/pi/Desktop/metingen/Meting: " + self.conf.getDescriptionSettings() + ".csv"
+
+        filename = "/home/pi/Desktop/metingen/"
+        if isNulmeting:
+            filename += "Nul-meting:"
+        else:
+            filename += "Meting:"
+        description = self.conf.getDescriptionSettings().replace(" ", "")
+        filename += description
+        filename += ".csv"
+
         with open(filename, 'w', newline='') as file:
             writer = csv.writer (file)
+            writer.writerow(["Pa", "l/s"])
 
+            pressures = 0
+            if mode == 1:
+                pressures = [4, 8, 10, 15, 20, 30, 40, 60, 80, 100]
             if mode == 2:
-                for pressure in range(pressureInterval, maxPressure + pressureInterval, pressureInterval):
-                    if (self.stopFlag):
-                        self.stopFlag = False
-                        self.fan.setSpeedRaw (0)
-                        self.interface.stopMeasurement (None)
-                        return
-                    self.targetPressure = pressure
-                    self.interface.setCurrentStageAndPressure ("setting correct fan speed", self.targetPressure)
-                    self.setFanFromPressure (isNulmeting)
-                    if (self.stopFlag):
-                        self.stopFlag = False
-                        self.fan.setSpeedRaw (0)
-                        self.interface.stopMeasurement (None)
-                        return
-                    self.interface.setCurrentStageAndPressure ("measuring", self.targetPressure)
-                    averagePressures = []
-                    averageAirflows = []
-                    for i in range (measurementTime * 2):
-                        averagePressures.append (self.pressuresensor.readPressure())
-                        averageAirflows.append (self.fan.getAirflowActual())
-                        time.sleep (0.5)
-                    averagePressure = sum (averagePressures) / len (averagePressures)
-                    averageAirflow = sum (averageAirflows) / len (averageAirflows)
-                    self.interface.setPreviousPressureAirFlow (averagePressure, averageAirflow)
-                    writer.writerow([averagePressure, averageAirflow])
+                pressures = range(pressureInterval, maxPressure + pressureInterval, pressureInterval)
+            if mode == 1 and isBackwardMeasurement:
+                pressures = [100, 80, 60, 40, 30, 20, 15, 10, 8, 4]
+            if mode == 2 and isBackwardMeasurement:
+                pressures = range(maxPressure, 0, -pressureInterval)
+
+            for pressure in pressures:
+                if (self.stopFlag):
+                    self.stopFlag = False
+                    self.fan.setSpeedRaw (0)
+                    self.interface.stopMeasurement (None)
+                    return
+                self.targetPressure = pressure
+                self.interface.setCurrentStageAndPressure ("setting correct fan speed", self.targetPressure)
+                self.setFanFromPressure (isNulmeting)
+                if (self.stopFlag):
+                    self.stopFlag = False
+                    self.fan.setSpeedRaw (0)
+                    self.interface.stopMeasurement (None)
+                    return
+                self.interface.setCurrentStageAndPressure ("measuring", self.targetPressure)
+                averagePressures = []
+                averageAirflows = []
+                for i in range (measurementTime * 2):
+                    averagePressures.append (self.pressuresensor.readPressure())
+                    averageAirflows.append (self.fan.getAirflowActual())
+                    time.sleep (0.5)
+                averagePressure = sum (averagePressures) / len (averagePressures)
+                averageAirflow = sum (averageAirflows) / len (averageAirflows)
+                averagePressure = round (averagePressure, 2)
+                averageAirflow = round (averageAirflow, 2)
+                self.interface.setPreviousPressureAirFlow (averagePressure, averageAirflow)
+                writer.writerow([averagePressure, averageAirflow])
         self.fan.setSpeedRaw (0)
         self.interface.stopMeasurement (filename)
 
