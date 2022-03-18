@@ -43,7 +43,7 @@ class MeasurementController:
                 else:
                     return 150
 
-    def setFanFromPressure (self, isNulmeting):
+    def setFanFromPressure (self, isNulmeting, isBackwardMeasurement):
         currentPressure = self.pressuresensor.readPressure()
         currentFanSpeed = self.fan.getSetValue()
         if (self.targetPressure > currentPressure):
@@ -60,7 +60,7 @@ class MeasurementController:
                 currentPressure = averagePressure
                 currentFanSpeed = self.fan.getSetValue()
             return
-        if (self.targetPressure < currentPressure):
+        if (self.targetPressure < currentPressure and isBackwardMeasurement):
             while (self.targetPressure < currentPressure):
                 if (self.stopFlag):
                     return
@@ -111,7 +111,7 @@ class MeasurementController:
                     return
                 self.targetPressure = pressure
                 self.interface.setCurrentStageAndPressure ("setting correct fan speed", self.targetPressure)
-                self.setFanFromPressure (isNulmeting)
+                self.setFanFromPressure (isNulmeting, isBackwardMeasurement)
                 if (self.stopFlag):
                     self.stopFlag = False
                     self.fan.setSpeedRaw (0)
