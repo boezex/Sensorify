@@ -21,7 +21,7 @@ class MeasurementController:
     def setGUI (self, interface) -> None:
         self.interface = interface
         
-    def getIncreaseStep (self, currentPressure, isNulmeting):
+    def getIncreaseStep (self, currentPressure, isNulmeting) -> int:
         if isNulmeting:
             if (self.targetPressure > currentPressure):
                 if (self.targetPressure - currentPressure) > 10:
