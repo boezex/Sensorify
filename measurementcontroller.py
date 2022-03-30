@@ -67,7 +67,8 @@ class MeasurementController:
             while (self.targetPressure < currentPressure):
                 if (self.stopFlag):
                     return
-                self.fan.setSpeedRaw (currentFanSpeed - self.getIncreaseStep(currentPressure, isNulmeting))
+                speedToSet = currentFanSpeed - self.getIncreaseStep(currentPressure, isNulmeting)
+                self.fan.setSpeedRaw (speedToSet)
                 if (isNulmeting):
                     time.sleep (70)
                 else:
