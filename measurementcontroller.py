@@ -23,25 +23,23 @@ class MeasurementController:
         
     def getIncreaseStep (self, currentPressure, isNulmeting) -> int:
         if isNulmeting:
-            if (self.targetPressure > currentPressure):
-                if (self.targetPressure - currentPressure) > 10:
-                    return 300
-                elif (self.targetPressure - currentPressure) > 5:
-                    return 200
-                elif (self.targetPressure - currentPressure) > 3:
-                    return 150
-                else:
-                    return 100
+            if (self.targetPressure - currentPressure) > 10:
+                return 300
+            elif (self.targetPressure - currentPressure) > 5:
+                return 200
+            elif (self.targetPressure - currentPressure) > 3:
+                return 150
+            else:
+                return 100
         else:
-            if (self.targetPressure > currentPressure):
-                if (self.targetPressure - currentPressure) > 10:
-                    return 1500
-                elif (self.targetPressure - currentPressure) > 5:
-                    return 750
-                elif (self.targetPressure - currentPressure) > 3:
-                    return 500
-                else:
-                    return 150
+            if (self.targetPressure - currentPressure) > 10:
+                return 1500
+            elif (self.targetPressure - currentPressure) > 5:
+                return 750
+            elif (self.targetPressure - currentPressure) > 3:
+                return 500
+            else:
+                return 150
 
     def setFanFromPressure (self, isNulmeting, isBackwardMeasurement):
         currentPressure = self.pressuresensor.readPressure()
