@@ -22,7 +22,7 @@ class Fan:
         speed = 65536 * pct
 
     def setSpeedRaw (self, speed) -> None:
-        if (speed > 65536):
+        if (speed > 65536 or speed < 0):
             return
         self.mutex.acquire ()
         self.setValue = speed

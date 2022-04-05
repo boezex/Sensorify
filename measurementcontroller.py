@@ -64,7 +64,11 @@ class MeasurementController:
             while (self.targetPressure < currentPressure):
                 if (self.stopFlag):
                     return
-                self.fan.setSpeedRaw (currentFanSpeed - self.getIncreaseStep(currentPressure, isNulmeting))
+                targetSpeed = currentFanSpeed - self.getIncreaseStep(currentPressure, isNulmeting)
+                if (targetSpeed > 0):   
+                    self.fan.setSpeedRaw (targetSpeed)
+                else:
+                    self.fan.setSpeedRaw (0)
                 time.sleep (45)
                 averagePressures = []
                 for i in range (10):

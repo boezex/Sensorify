@@ -19,7 +19,7 @@ class GUI:
         self.msmcontroller = msmcontroller
 
         self.window = Tk ()
-        self.window.title ("Sensorify V1.0")
+        self.window.title ("Sensorify V1.1")
         self.window.geometry ("1100x600")
         self.window.resizable (False,False)
         self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.isBackMeasurement = self.config.getMeasurementSettings ()
@@ -48,7 +48,7 @@ class GUI:
         self.airFlowActualLabel = Label (self.window, text="0")
         self.airFlowActualLabel.grid (row=4, column=1, padx=6, pady=6)
 
-        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=14, sticky="ns", padx=6, pady=6)
+        Separator (self.window, orient='vertical').grid (row=0, column=2, rowspan=15, sticky="ns", padx=6, pady=6)
         Separator (self.window, orient='horizontal').grid (row=9, column=0, columnspan=5, sticky="ew", padx=6, pady=6)
 
         Label (self.window, text= "Time to calculate average pressure difference(s):").grid (row=0, column=3, padx=6, pady=6)
