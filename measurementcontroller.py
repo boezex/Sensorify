@@ -90,9 +90,9 @@ class MeasurementController:
 
         filename = "/home/pi/Desktop/metingen/"
         if isNulmeting:
-            filename += "Nul-meting:"
+            filename += "Nul-meting_"
         else:
-            filename += "Meting:"
+            filename += "Meting_"
         description = self.conf.getDescriptionSettings().replace(" ", "")
         filename += description
         filename += ".csv"
@@ -137,7 +137,7 @@ class MeasurementController:
                 averagePressure = round (averagePressure, 2)
                 averageAirflow = round (averageAirflow, 2)
                 self.interface.setPreviousPressureAirFlow (averagePressure, averageAirflow)
-                writer.writerow(["{0:.2f}".format(averagePressure), str(averageAirflow)])
+                writer.writerow(["{0:.2f}".format(averagePressure), "{0:.2f}".format(averageAirflow)])
         self.fan.setSpeedRaw (0)
         self.interface.stopMeasurement (filename)
 
