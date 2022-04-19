@@ -1,3 +1,5 @@
+from cgitb import text
+from statistics import NormalDist
 from tkinter import *
 from tkinter.messagebox import showerror, showinfo
 from tkinter.ttk import Separator
@@ -19,10 +21,10 @@ class GUI:
         self.msmcontroller = msmcontroller
 
         self.window = Tk ()
-        self.window.title ("Sensorify V1.1")
+        self.window.title ("Sensorify V1.2")
         self.window.geometry ("1100x600")
         self.window.resizable (False,False)
-        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.isBackMeasurement = self.config.getMeasurementSettings ()
+        self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isBackMeasurement = self.config.getMeasurementSettings ()
         self.description = StringVar (self.window, self.config.getDescriptionSettings ())
         self.radioButtons = IntVar ()
         self.radioButtons.set (self.mode)
@@ -57,25 +59,22 @@ class GUI:
         self.measurementTimeSlider.grid (row=0, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Measurement mode:").grid (row=1, column=3, padx=6, pady=6)
+        self.zeroMeasurementRadioButton = Radiobutton (self.window, text="Zero measurement", value=3, variable=self.radioButtons)
         self.nenRadioButton = Radiobutton (self.window, text="NEN-EN 13141-1 compliant", value=1, variable=self.radioButtons)
         self.customRadioButton = Radiobutton (self.window, text="Custom Pressure interval:", value=2, variable=self.radioButtons)
-        self.nenRadioButton.grid (row=1, column=4, padx=6, pady=6)
-        self.customRadioButton.grid (row=2, column=4, padx=6, pady=6)
+        self.zeroMeasurementRadioButton.grid (row=1, column=4, padx=6, pady=6)
+        self.nenRadioButton.grid (row=2, column=4, padx=6, pady=6)
+        self.customRadioButton.grid (row=3, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Max Pressure to test (Pa)").grid (row=3, column=3, padx=6, pady=6)
         Label (self.window, text= "Difference in pressure between measurements (Pa)").grid (row=4, column=3, padx=6, pady=6)
         self.maxPressureSlider = Scale (self.window, from_=10, to=250, orient='horizontal', resolution=10)
         self.maxPressureSlider.set (self.maxPressure)
-        self.maxPressureSlider.grid (row=3, column=4, padx=6, pady=6)
+        self.maxPressureSlider.grid (row=4, column=4, padx=6, pady=6)
 
         self.pressureDiffSlider = Scale (self.window, from_=2, to=15, orient='horizontal')
         self.pressureDiffSlider.set (self.pressureInterval)
-        self.pressureDiffSlider.grid (row=4, column=4, padx=6, pady=6)
-
-        Label (self.window, text= "Is zero-measurement: ").grid (row=5, column=3, padx=6, pady=6)
-        self.isNulmetingButtonValue = IntVar()
-        self.isNulmetingButton = Checkbutton (self.window, variable=self.isNulmetingButtonValue)
-        self.isNulmetingButton.grid (row=5, column=4, padx=6, pady=6)
+        self.pressureDiffSlider.grid (row=5, column=4, padx=6, pady=6)
 
         Label (self.window, text= "Is backward-measurement: ").grid (row=6, column=3, padx=6, pady=6)
         self.isBackMeasurementButtonValue = IntVar()
@@ -143,9 +142,8 @@ class GUI:
         self.maxPressure = self.maxPressureSlider.get ()
         self.pressureInterval = self.pressureDiffSlider.get ()
         self.description = self.descriptionEntry.get ()
-        self.isNulmeting = self.isNulmetingButtonValue.get ()
         self.isBackMeasurement = self.isBackMeasurementButtonValue.get ()
-        self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isNulmeting, self.isBackMeasurement, self.description)
+        self.config.setMeasurementSettings (self.mode, self.measurementTime, self.maxPressure, self.pressureInterval, self.isBackMeasurement, self.description)
         
         self.msmcontroller.startMeasurement ()
 
@@ -175,6 +173,8 @@ class GUI:
             if self.mode == 1 or self.isBusy:
                 self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey")
                 self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey")
+            elif self.mode == 3 or self.isBusy:
+                self.pressureDiffSlider.config(state=DISABLED,troughcolor = "grey")
             else:
                 self.maxPressureSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
                 self.pressureDiffSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
@@ -186,10 +186,11 @@ class GUI:
                 self.descriptionEntry.config(state=DISABLED)
                 self.setAirFlowEntry.config(state=DISABLED)
                 self.setPressureDifferenceEntry.config(state=DISABLED)
-                self.isNulmetingButton.config(state=DISABLED)
                 self.isBackMeasurementButton.config(state=DISABLED)
                 self.nenRadioButton.config(state=DISABLED)
                 self.customRadioButton.config(state=DISABLED)
+                self.zeroMeasurementRadioButton.config(state=DISABLED)
+                self.maxPressureSlider.config(state=DISABLED,troughcolor = "grey")
             else:
                 self.measurementTimeSlider.config(state=NORMAL,takefocus=1,troughcolor = "#b3b3b3")
                 self.setAirFlowButton.config(state=NORMAL)
@@ -198,10 +199,10 @@ class GUI:
                 self.descriptionEntry.config(state=NORMAL)
                 self.setAirFlowEntry.config(state=NORMAL)
                 self.setPressureDifferenceEntry.config(state=NORMAL)
-                self.isNulmetingButton.config(state=NORMAL)
                 self.isBackMeasurementButton.config(state=NORMAL)
                 self.nenRadioButton.config(state=NORMAL)
                 self.customRadioButton.config(state=NORMAL)
+                self.zeroMeasurementRadioButton.config(state=NORMAL)
             
 
     def updateGui (self):

@@ -25,25 +25,23 @@ class Config:
             self.config['measurement']['measurementTime'] = '60'
             self.config['measurement']['maxPressure'] = '150'
             self.config['measurement']['pressureInterval'] = '10'
-            self.config['measurement']['isnulmeting'] = '0'
             self.config['measurement']['isbackmeasurement'] = '0'
             self.config['measurement']['description'] = 'Vul naam in'
         
             self.writeConfig ()
 
     def getMeasurementSettings (self):
-        return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval']), int(self.config['measurement']['isnulmeting']), int(self.config['measurement']['isbackmeasurement'])
+        return int(self.config['measurement']['mode']), int(self.config['measurement']['measurementTime']), int(self.config['measurement']['maxPressure']), int(self.config['measurement']['pressureInterval']), int(self.config['measurement']['isbackmeasurement'])
     
     def getDescriptionSettings (self):
         return self.config['measurement']['description']
 
-    def setMeasurementSettings (self, mode, measurementTime, maxPressure, pressureInterval, isNulmeting, isBackMeasurement, description):
+    def setMeasurementSettings (self, mode, measurementTime, maxPressure, pressureInterval, isBackMeasurement, description):
         self.config['measurement'] = {}
         self.config['measurement']['mode'] = str(mode)
         self.config['measurement']['measurementTime'] = str(measurementTime)
         self.config['measurement']['maxPressure'] = str(maxPressure)
         self.config['measurement']['pressureInterval'] = str(pressureInterval)
-        self.config['measurement']['isnulmeting'] = str(isNulmeting)
         self.config['measurement']['isbackmeasurement'] = str(isBackMeasurement)
         self.config['measurement']['description'] = description
     
